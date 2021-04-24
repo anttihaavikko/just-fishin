@@ -5,7 +5,7 @@ using AnttiStarterKit.Animations;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Fisher : MonoBehaviour
+public class Fisher : HasContainer
 {
     public Camera cam;
     public Animator anim;
@@ -64,7 +64,7 @@ public class Fisher : MonoBehaviour
         t.localScale = new Vector3(t.position.x < position.x ? 1 : -1, 1, 1);
     }
 
-    public Fish GetFish()
+    public Fish GetRandomFish()
     {
         var fish = new[]
         {
@@ -85,7 +85,7 @@ public class Fisher : MonoBehaviour
             _isFishing = false;
             anim.SetBool(Fishing, false);
 
-            _bag.Add(GetFish());
+            _bag.Add(GetRandomFish());
             
             // Debug.Log("Bag has " + _bag.GetCount());
             // bag.GetContents().ForEach(fish => Debug.Log(fish.name));
@@ -135,5 +135,16 @@ public class Fisher : MonoBehaviour
             case EquipSlot.Rod:
                 break;
         }
+    }
+
+    public bool HasFish()
+    {
+        return _bag.GetCount() > 0;
+    }
+
+    public override Fish? GetFish()
+    {
+        Debug.Log("Get fish from container");
+        return _bag.GetFish();
     }
 }

@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public Fisher fisher;
+    public List<Trap> traps;
+    public Transform storeSpot;
+    
     private int _money;
     private Dictionary<Upgrade, int> _upgrades;
 

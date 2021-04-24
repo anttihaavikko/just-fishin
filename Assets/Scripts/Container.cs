@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class Container
 {
@@ -35,5 +37,20 @@ public class Container
     public void Clear()
     {
         _contents.Clear();
+    }
+
+    public Fish? GetFish()
+    {
+        if (!_contents.Any()) return null;
+        
+        var fish = _contents.First();
+        Debug.Log("Got " + fish);
+        _contents.Remove(fish);
+        return fish;
+    }
+
+    public bool IsFull()
+    {
+        return _contents.Count >= _maxSize;
     }
 }
