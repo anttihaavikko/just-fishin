@@ -14,9 +14,11 @@ public class Inventory : MonoBehaviour
     
     private int _money;
     private Dictionary<Upgrade, int> _upgrades;
+    private List<Dog> _dogs;
 
     private void Start()
     {
+        _dogs = new List<Dog>();
         _upgrades = new Dictionary<Upgrade, int>();
     }
 
@@ -35,6 +37,11 @@ public class Inventory : MonoBehaviour
         var dog = Instantiate(dogPrefab, fisher.transform.position + Dog.GetRandomOffset(), Quaternion.identity);
         dog.inventory = this;
         dog.SetColor(color);
+        _dogs.Add(dog);
+        if (HasUpgrade(Upgrade.DogBag))
+        {
+            dog.AddBag();
+        }
     }
 
     public void AddMoney(int amount)
@@ -54,6 +61,9 @@ public class Inventory : MonoBehaviour
                 break;
             case Upgrade.BagSpace:
                 fisher.ScaleBag();
+                break;
+            case Upgrade.DogBag:
+                _dogs.ForEach(d => d.AddBag());
                 break;
         }
     }

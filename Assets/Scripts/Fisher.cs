@@ -12,7 +12,7 @@ public class Fisher : HasContainer
 {
     public Camera cam;
     public Animator anim;
-    public LayerMask lakeMask;
+    public LayerMask lakeMask, trapMask;
     public SpriteRenderer shirtSprite, hatSprite, rodSprite;
     public List<Sprite> hatSprites;
     public Seeker seeker;
@@ -20,6 +20,8 @@ public class Fisher : HasContainer
     public Transform marker;
     public Transform bagSprite;
     public GameObject splash;
+    public SpriteRenderer heldTrapSprite;
+    public Trap trapPrefab;
     
     public Shop shop;
     public Inventory inventory;
@@ -29,13 +31,16 @@ public class Fisher : HasContainer
 
     private Container _bag;
 
-    private static readonly int Moving = Animator.StringToHash("moving");
-    private static readonly int Fishing = Animator.StringToHash("fishing");
     private int _pathIndex;
     private Vector3 _markerRest;
     private Transform _markerParent;
 
     private bool _needsPathFinding;
+    private bool holding;
+    
+    private static readonly int Moving = Animator.StringToHash("moving");
+    private static readonly int Fishing = Animator.StringToHash("fishing");
+    private static readonly int Holding = Animator.StringToHash("holding");
 
     private void Start()
     {
@@ -166,10 +171,44 @@ public class Fisher : HasContainer
         EffectManager.Instance.AddEffect(0, p);
     }
 
+    private bool PickingTrap(Vector3 pos)
+    {
+        var hit = Physics2D.OverlapCircle(pos, 0.1f, trapMask);
+        var picking = hit && (transform.position - pos).magnitude < 2f;
+        if (picking)
+        {
+            var trap = hit.GetComponent<Trap>();
+            inventory.traps.Remove(trap);
+            Destroy(trap.gameObject);
+        }
+        return picking;
+    }
+
     private bool CanStartFishing(Vector3 pos)
     {
+        if (PickingTrap(pos))
+        {
+            Hold(true);
+            return false;
+        }
         var hit = Physics2D.OverlapCircle(pos, 0.1f, lakeMask);
-        if (!hit || (transform.position - pos).magnitude > 5f) return false;
+        var hitTrap = Physics2D.OverlapCircle(pos, 0.1f, trapMask);
+        if (!hit || (transform.position - pos).magnitude > 5f || hitTrap) return false;
+
+        if (holding)
+        {
+            var t = transform;
+            var p = t.position;
+            var dir = pos - p;
+            var edge = Physics2D.Raycast(p, dir, 10f, lakeMask);
+            if (edge)
+            {
+                Hold(false);
+                var trap = Instantiate(trapPrefab, edge.point, Quaternion.identity);
+                inventory.traps.Add(trap);
+            }
+            return false;
+        }
 
         splash.transform.parent = null;
         splash.transform.position = pos + Vector3.down * 0.1f;
@@ -226,5 +265,12 @@ public class Fisher : HasContainer
     public override Fish? GetFish()
     {
         return _bag.GetFish();
+    }
+
+    private void Hold(bool state)
+    {
+        holding = state;
+        heldTrapSprite.gameObject.SetActive(state);
+        anim.SetBool(Holding, state);
     }
 }

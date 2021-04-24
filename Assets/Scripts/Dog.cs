@@ -17,6 +17,7 @@ public class Dog : HasContainer
     public Transform faceHolder;
     public GameObject fishHolder;
     public SpriteRenderer fish;
+    public GameObject bagSprite;
 
     private Vector3 _movePos;
     private Container _bag;
@@ -28,7 +29,7 @@ public class Dog : HasContainer
     private int _pathIndex;
     
 
-    private void Start()
+    private void Awake()
     {
         _bag = new Container(1);
         _movePos = transform.position;
@@ -197,5 +198,11 @@ public class Dog : HasContainer
     public override Fish? GetFish()
     {
         return _bag.GetFish();
+    }
+
+    public void AddBag()
+    {
+        _bag.SetMaxSize(5);
+        bagSprite.SetActive(true);
     }
 }
