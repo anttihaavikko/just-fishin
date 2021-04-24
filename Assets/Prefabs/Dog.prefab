@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6424441193001911431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2091766950120116261}
+  m_Layer: 0
+  m_Name: Face Wrapper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2091766950120116261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6424441193001911431}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.72, y: 0.72, z: 0.72}
+  m_Children:
+  - {fileID: 8232742947636301135}
+  m_Father: {fileID: 8232742948724289239}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8232742947636301136
 GameObject:
   m_ObjectHideFlags: 0
@@ -23,13 +54,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8232742947636301136}
-  m_LocalRotation: {x: -0, y: -0, z: -0.000009417533, w: 1}
-  m_LocalPosition: {x: 0.118, y: -0.023, z: 0}
-  m_LocalScale: {x: 0.6591038, y: 0.6591038, z: 0.6591038}
+  m_LocalRotation: {x: -0, y: -0, z: -0.000009447334, w: 1}
+  m_LocalPosition: {x: 0.11800004, y: -0.022999918, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8232742948749520635}
-  m_Father: {fileID: 8232742948724289239}
-  m_RootOrder: 1
+  m_Father: {fileID: 2091766950120116261}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8232742947746877286
 GameObject:
@@ -1518,7 +1549,7 @@ Transform:
   m_LocalScale: {x: 1.2340997, y: 1.2340997, z: 1.2341}
   m_Children:
   - {fileID: 8232742947935138457}
-  - {fileID: 8232742947636301135}
+  - {fileID: 2091766950120116261}
   m_Father: {fileID: 8232742948561966967}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1817,6 +1848,7 @@ MonoBehaviour:
   lakeMask:
     serializedVersion: 2
     m_Bits: 64
+  faceHolder: {fileID: 8232742947636301135}
 --- !u!114 &-655781389372309950
 MonoBehaviour:
   m_ObjectHideFlags: 0

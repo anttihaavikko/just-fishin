@@ -14,6 +14,8 @@ public class Fisher : HasContainer
     public SpriteRenderer shirtSprite, hatSprite, rodSprite;
     public List<Sprite> hatSprites;
     public Seeker seeker;
+    public Transform faceHolder;
+    public Transform marker;
     
     public Shop shop;
     public Inventory inventory;
@@ -26,6 +28,8 @@ public class Fisher : HasContainer
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
     private int _pathIndex;
+    private Vector3 _markerRest;
+    private Transform _markerParent;
 
     private bool _needsPathFinding;
 
@@ -33,6 +37,8 @@ public class Fisher : HasContainer
     {
         _bag = new Container();
         _movePos = transform.position;
+        _markerRest = marker.localPosition;
+        _markerParent = marker.parent;
     }
 
     private void Update()
@@ -76,7 +82,7 @@ public class Fisher : HasContainer
         anim.SetBool(Moving, moving);
 
         if (!moving) return;
-        position = Vector3.MoveTowards(position, _movePos, 10f * Time.deltaTime);
+        position = Vector3.MoveTowards(position, _movePos, 7f * Time.deltaTime);
         t.position = position;
         TurnTowards(_movePos);
         anim.SetBool(Fishing, false);
@@ -85,7 +91,9 @@ public class Fisher : HasContainer
     private void TurnTowards(Vector3 position)
     {
         var t = transform;
-        t.localScale = new Vector3(t.position.x < position.x ? 1 : -1, 1, 1);
+        var mirrored = t.position.x < position.x;
+        t.localScale = new Vector3(mirrored ? 1 : -1, 1, 1);
+        faceHolder.localScale = t.localScale;
     }
 
     public static Fish GetRandomFish()
@@ -108,6 +116,8 @@ public class Fisher : HasContainer
         {
             _isFishing = false;
             anim.SetBool(Fishing, false);
+
+            Invoke(nameof(ResetMarker), 0.1f);
 
             _bag.Add(GetRandomFish());
 
@@ -135,10 +145,21 @@ public class Fisher : HasContainer
         }
     }
 
+    private void ResetMarker()
+    {
+        marker.parent = _markerParent;
+        Tweener.Instance.MoveLocalTo(marker, _markerRest, 0.2f, 0, TweenEasings.QuadraticEaseIn);
+        Tweener.Instance.RotateTo(marker, Quaternion.identity, 0.2f, 0f, TweenEasings.QuadraticEaseIn);
+    }
+
     private bool CanStartFishing(Vector3 pos)
     {
         var hit = Physics2D.OverlapCircle(pos, 0.1f, lakeMask);
         if (!hit || (transform.position - pos).magnitude > 5f) return false;
+
+        marker.parent = null;
+        Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);
+        Tweener.Instance.RotateTo(marker, Quaternion.identity, 0.2f, 0f, TweenEasings.QuadraticEaseIn);
         
         anim.SetBool(Moving, false);
         anim.SetBool(Fishing, true);

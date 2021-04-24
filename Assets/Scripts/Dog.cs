@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AnttiStarterKit.Animations;
 using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,6 +14,7 @@ public class Dog : HasContainer
     public List<SpriteRenderer> colorSprites;
     public Seeker seeker;
     public LayerMask lakeMask;
+    public Transform faceHolder;
 
     private Vector3 _movePos;
     private Container _bag;
@@ -22,6 +24,7 @@ public class Dog : HasContainer
     private static readonly int Moving = Animator.StringToHash("moving");
     private bool _needsPathFinding;
     private int _pathIndex;
+    
 
     private void Start()
     {
@@ -182,7 +185,9 @@ public class Dog : HasContainer
     private void TurnTowards(Vector3 position)
     {
         var t = transform;
-        t.localScale = new Vector3(t.position.x < position.x ? 1 : -1, 1, 1);
+        var mirrored = t.position.x < position.x;
+        t.localScale = new Vector3(mirrored ? 1 : -1, 1, 1);
+        faceHolder.localScale = t.localScale;
     }
 
     public override Fish? GetFish()
