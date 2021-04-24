@@ -49,15 +49,21 @@ public class Fisher : HasContainer
             shop.Toggle(_bag);
         }
         
-        if (shop.IsOpen) return;
-        
-        CheckClick();
         Move();
+        
+        if (shop.IsOpen) return;
+        CheckClick();
     }
 
     private void Move()
     {
         var curPath = seeker.GetCurrentPath();
+        
+        if (shop.IsOpen)
+        {
+            anim.SetBool(Moving, false);
+            return;
+        }
         
         if (_needsPathFinding)
         {

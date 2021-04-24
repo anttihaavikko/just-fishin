@@ -115,6 +115,12 @@ public class Dog : HasContainer
     {
         var curPath = seeker.GetCurrentPath();
         
+        if (inventory.fisher.shop.IsOpen)
+        {
+            anim.SetBool(Moving, false);
+            return;
+        }
+        
         if (_needsPathFinding)
         {
             if (!seeker.IsDone() || curPath == null)
@@ -136,12 +142,6 @@ public class Dog : HasContainer
             return;
         }
 
-        if (inventory.fisher.shop.IsOpen)
-        {
-            anim.SetBool(Moving, false);
-            return;
-        }
-        
         anim.SetBool(Moving, moving);
 
         if (!moving && !_waiting)
