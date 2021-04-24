@@ -64,7 +64,7 @@ public class Fisher : HasContainer
         t.localScale = new Vector3(t.position.x < position.x ? 1 : -1, 1, 1);
     }
 
-    public Fish GetRandomFish()
+    public static Fish GetRandomFish()
     {
         var fish = new[]
         {

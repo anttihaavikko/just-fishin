@@ -7,8 +7,9 @@ public class Container
     private int _maxSize = 5;
     private readonly List<Fish> _contents;
 
-    public Container()
+    public Container(int max = 5)
     {
+        _maxSize = max;
         _contents = new List<Fish>();
     }
 
@@ -44,7 +45,6 @@ public class Container
         if (!_contents.Any()) return null;
         
         var fish = _contents.First();
-        Debug.Log("Got " + fish);
         _contents.Remove(fish);
         return fish;
     }

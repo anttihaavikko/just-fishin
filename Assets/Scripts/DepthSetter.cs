@@ -16,7 +16,7 @@ public class DepthSetter : MonoBehaviour
     {
         if (_sortingGroup)
         {
-            _sortingGroup.sortingOrder = -Mathf.RoundToInt(transform.position.y);
+            _sortingGroup.sortingOrder = -Mathf.RoundToInt(transform.position.y * 10);
         }
     }
 }

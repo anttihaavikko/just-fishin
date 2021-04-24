@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Dog : MonoBehaviour
+public class Dog : HasContainer
 {
     public Inventory inventory;
     public Animator anim;
@@ -20,9 +20,8 @@ public class Dog : MonoBehaviour
 
     private void Start()
     {
-        _bag = new Container();
+        _bag = new Container(1);
         _movePos = transform.position;
-        // Invoke(nameof(GetTarget), 1f);
     }
 
     private void Update()
@@ -81,6 +80,7 @@ public class Dog : MonoBehaviour
 
     private void GoSell()
     {
+        _waiting = false;
         _movePos = inventory.storeSpot.position + GetRandomOffset(0.2f);
         _selling = true;
     }
@@ -109,13 +109,13 @@ public class Dog : MonoBehaviour
                     _bag.Add((Fish)fish);   
                 }
             }
-            Invoke(nameof(GetTarget), 1f);
+            Invoke(nameof(GetTarget), GetDelay());
             _waiting = true;
             return;
         }
 
         if (!moving) return;
-        position = Vector3.MoveTowards(position, _movePos, 6f * Time.deltaTime);
+        position = Vector3.MoveTowards(position, _movePos, 4f * Time.deltaTime);
         t.position = position;
         TurnTowards(_movePos);
     }
@@ -123,14 +123,24 @@ public class Dog : MonoBehaviour
     private void Sell()
     {
         Debug.Log("Sold " + _bag.GetCount() + " fish.");
-        _bag.Clear();
+        inventory.fisher.shop.SellAll(_bag);
         _selling = false;
-        Invoke(nameof(GetTarget), 1f);
+        Invoke(nameof(GetTarget), GetDelay());
+    }
+
+    private static float GetDelay()
+    {
+        return Random.Range(1f, 2f);
     }
 
     private void TurnTowards(Vector3 position)
     {
         var t = transform;
         t.localScale = new Vector3(t.position.x < position.x ? 1 : -1, 1, 1);
+    }
+
+    public override Fish? GetFish()
+    {
+        return _bag.GetFish();
     }
 }

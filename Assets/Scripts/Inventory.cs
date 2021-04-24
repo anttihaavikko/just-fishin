@@ -47,7 +47,7 @@ public class Inventory : MonoBehaviour
     {
         if (item == Upgrade.Dog)
         {
-            AddDog(Color.yellow);
+            AddDog(Color.white);
         }
         
         if (!_upgrades.ContainsKey(item))

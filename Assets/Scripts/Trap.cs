@@ -8,7 +8,9 @@ public class Trap : HasContainer
 
     private void Start()
     {
-        _contents = new Container();
+        _contents = new Container(1);
+        
+        Invoke(nameof(AddFish), 5f);
     }
     
     public bool HasFish()
@@ -19,5 +21,11 @@ public class Trap : HasContainer
     public override Fish? GetFish()
     {
         return _contents.GetFish();
+    }
+
+    private void AddFish()
+    {
+        _contents.Add(Fisher.GetRandomFish());
+        Invoke(nameof(AddFish), 5f);
     }
 }

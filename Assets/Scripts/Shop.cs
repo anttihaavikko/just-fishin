@@ -131,7 +131,7 @@ public class Shop : MonoBehaviour
         });
     }
 
-    private void SellAll(Container bag)
+    public void SellAll(Container bag)
     {
         var total = bag.GetContents().Sum(item => item.Price);
         var multi = Mathf.Pow(1.1f, inventory.GetLevel(Upgrade.Haggle));
