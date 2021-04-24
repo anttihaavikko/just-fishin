@@ -4125,6 +4125,16 @@ MonoBehaviour:
     color: {r: 0.117647074, g: 0.8509804, b: 0.37199283, a: 1}
   - name: Dark
     color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
+  - name: White
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - name: Gray
+    color: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+  - name: Light Brown
+    color: {r: 0.6603774, g: 0.49113485, b: 0.23362409, a: 1}
+  - name: Dark Brown
+    color: {r: 0.254717, g: 0.1815259, b: 0.07088822, a: 1}
+  - name: Pink
+    color: {r: 0.8584906, g: 0.5709772, b: 0.6042615, a: 1}
 --- !u!1 &1705060728
 GameObject:
   m_ObjectHideFlags: 0

@@ -68,9 +68,9 @@ public class Fisher : MonoBehaviour
     {
         var fish = new[]
         {
-            new Fish("Bass", 1),
-            new Fish("Trout", 2),
-            new Fish("Salmon", 3)
+            new Fish("Bass", "Lorem bass ipsum", 1),
+            new Fish("Trout", "Lorem trout ipsum", 2),
+            new Fish("Salmon", "Lorem salmon ipsum", 3)
         };
 
         return fish[Random.Range(0, fish.Length)];

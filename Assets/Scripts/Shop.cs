@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class Shop : MonoBehaviour
 {
@@ -18,25 +19,34 @@ public class Shop : MonoBehaviour
     
     public bool IsOpen { get; private set; }
 
-    private List<ShopItem> itemPool;
+    private List<ShopItem> _itemPool;
 
     private void Start()
     {
         Close();
-        itemPool = new List<ShopItem>();
+        _itemPool = new List<ShopItem>
+        {
+            new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
+            new UpgradeItem {Name = "Patron", Description = "Decreases buy prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Patron},
+            new UpgradeItem {Name = "Bigger Bag", Description = "+5 bag space", Price = 100, Repeatable = true, Type = Upgrade.BagSpace},
+            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader}
+        };
+
         equipColors.ForEach(c =>
         {
-            itemPool.Add(new EquipItem
+            _itemPool.Add(new EquipItem
             {
                 Name = c.name + " Shirt",
+                Description = "Comfortable " + c.name.ToLower() + " t-shirt",
                 Price = 50,
                 Slot = EquipSlot.Shirt,
                 Color = c.color
             });
             
-            itemPool.Add(new EquipItem
+            _itemPool.Add(new EquipItem
             {
                 Name = c.name + " Bucket Hat",
+                Description = "Practical " + c.name.ToLower() + " hat",
                 Price = 50,
                 Slot = EquipSlot.Hat,
                 Color = c.color,
@@ -58,13 +68,15 @@ public class Shop : MonoBehaviour
             var btn = Instantiate(buttonPrefab, sellPanel.container);
             sellPanel.Add(btn.gameObject);
             btn.nameText.text = item.Name;
-            btn.descText.text = "Lorem ipsum";
-            btn.priceText.text = item.Price.ToString();
+            btn.descText.text = item.Description;
+            var multi = Mathf.Pow(1.1f, inventory.GetLevel(Upgrade.Haggle));
+            var adjustedPrice = Mathf.RoundToInt(item.Price * multi);
+            btn.priceText.text = adjustedPrice.ToString();
             btn.button.onClick.AddListener(() =>
             {
                 Destroy(btn.gameObject);
                 items.Remove(item);
-                inventory.AddMoney(item.Price);
+                inventory.AddMoney(adjustedPrice);
             });
         });
     }
@@ -81,7 +93,10 @@ public class Shop : MonoBehaviour
     private void PopulateCategories(Container bag)
     {
         categoryPanel.title.text = "Shop";
-        CreateCategory("Sell all", "Sell all fish", () => SellAll(bag));
+        if (inventory.HasUpgrade(Upgrade.BulkTrader))
+        {
+            CreateCategory("Sell all", "Sell all fish", () => SellAll(bag));   
+        }
         CreateCategory("Sell", "Something", () => UpdateSellMenu(bag));
         CreateCategory("Buy", "Stuff", UpdateBuyMenu);
         CreateCategory("Close", "Leave shop", Close);
@@ -89,23 +104,27 @@ public class Shop : MonoBehaviour
 
     private void UpdateBuyMenu()
     {
-        itemPool.ForEach(item =>
+        sellPanel.Clear();
+        
+        _itemPool.ForEach(item =>
         {
             var btn = Instantiate(buttonPrefab, sellPanel.container);
             sellPanel.Add(btn.gameObject);
             btn.nameText.text = item.Name;
-            btn.descText.text = "Lorem ipsum";
-            btn.priceText.text = item.Price.ToString();
+            btn.descText.text = item.Description;
+            btn.priceText.text = item.GetRealPrice(fisher).ToString();
             btn.button.onClick.AddListener(() =>
             {
                 if (!item.Repeatable)
                 {
-                    itemPool.Remove(item);
+                    _itemPool.Remove(item);
                     Destroy(btn.gameObject);                    
                 }
                 
-                inventory.AddMoney(-item.Price);
+                inventory.AddMoney(-item.GetRealPrice(fisher));
                 item.Buy(fisher);
+                
+                UpdateBuyMenu();
             });
         });
     }
@@ -113,7 +132,8 @@ public class Shop : MonoBehaviour
     private void SellAll(Container bag)
     {
         var total = bag.GetContents().Sum(item => item.Price);
-        inventory.AddMoney(total);
+        var multi = Mathf.Pow(1.1f, inventory.GetLevel(Upgrade.Haggle));
+        inventory.AddMoney(Mathf.RoundToInt(total * multi));
         bag.Clear();
         sellPanel.Clear();
     }
@@ -150,12 +170,40 @@ public class Shop : MonoBehaviour
 public class ShopItem
 {
     public string Name { get; set; }
-    public int Price { get; set; }
-    
-    public bool Repeatable { get; set; }
+    public string Description { get; set; }
+    public int Price { protected get; set; }
+    public bool Repeatable { get; set; } = false;
+
+    protected int DiscountedPrice(Fisher fisher)
+    {
+        var multi = Mathf.Pow(0.9f, fisher.inventory.GetLevel(Upgrade.Patron));
+        return Mathf.RoundToInt(Price * multi);
+    }
+
+    public virtual int GetRealPrice(Fisher fisher)
+    {
+        return DiscountedPrice(fisher);
+    }
 
     public virtual void Buy(Fisher fisher)
     {
+    }
+}
+
+public class UpgradeItem : ShopItem
+{
+    public Upgrade Type { get; set; }
+    
+    public override int GetRealPrice(Fisher fisher)
+    {
+        var level = fisher.inventory.GetLevel(Type);
+        return Mathf.RoundToInt(DiscountedPrice(fisher) + Mathf.FloorToInt(Price * level * level));
+    }
+    
+    public override void Buy(Fisher fisher)
+    {
+        base.Buy(fisher);
+        fisher.inventory.ApplyUpgrade(Type);
     }
 }
 
@@ -168,11 +216,6 @@ public class EquipItem : ShopItem
     public override void Buy(Fisher fisher)
     {
         base.Buy(fisher);
-        Equip(fisher);
-    }
-
-    protected virtual void Equip(Fisher fisher)
-    {
         fisher.Equip(this);
     }
 }
@@ -190,4 +233,12 @@ public struct EquipColor
 {
     public string name;
     public Color color;
+}
+
+public enum Upgrade
+{
+    Haggle,
+    Patron,
+    BagSpace,
+    BulkTrader
 }
