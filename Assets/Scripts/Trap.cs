@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Managers;
 using UnityEngine;
@@ -13,9 +14,8 @@ public class Trap : HasContainer
     private void Start()
     {
         _contents = new Container(1);
-        _contents.onUpdate = UpdateCountText;
-        
         Invoke(nameof(AddFish), 5f);
+        _contents.onUpdate = UpdateCountText;
     }
     
     public bool HasFish()
@@ -28,6 +28,13 @@ public class Trap : HasContainer
         var f = _contents.GetFish();
         UpdateVisuals();
         return f;
+    }
+
+    public List<Fish> GetAllFish()
+    {
+        var all = _contents.GetContents().ToList();
+        _contents.Clear();
+        return all;
     }
 
     private void AddFish()

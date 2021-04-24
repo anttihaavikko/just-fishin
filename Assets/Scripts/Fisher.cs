@@ -184,6 +184,8 @@ public class Fisher : HasContainer
         if (picking)
         {
             var trap = hit.GetComponent<Trap>();
+            var all = trap.GetAllFish();
+            all.ForEach(f => _bag.Add(f));
             inventory.traps.Remove(trap);
             Destroy(trap.gameObject);
         }
