@@ -891,6 +891,7 @@ Transform:
   - {fileID: 48893335}
   - {fileID: 1395236856}
   - {fileID: 1444257865}
+  - {fileID: 884187790}
   m_Father: {fileID: 1036112953}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1393,6 +1394,11 @@ MonoBehaviour:
   lakeMask:
     serializedVersion: 2
     m_Bits: 64
+  shirtSprite: {fileID: 921358400}
+  hatSprite: {fileID: 884187791}
+  rodSprite: {fileID: 80928991}
+  hatSprites:
+  - {fileID: 21300000, guid: 6078c5b55affc4382b91603952776ea4, type: 3}
   shop: {fileID: 1682633286}
   inventory: {fileID: 2144346782}
 --- !u!1 &472593216
@@ -2391,6 +2397,88 @@ MonoBehaviour:
   m_Length: 0.5
   m_ChildTransform: {fileID: 0}
   m_AttachedIK: {fileID: 969997958}
+--- !u!1 &884187789
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 884187790}
+  - component: {fileID: 884187791}
+  m_Layer: 0
+  m_Name: Hat
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &884187790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884187789}
+  m_LocalRotation: {x: -0, y: -0, z: 0.3066453, w: 0.9518239}
+  m_LocalPosition: {x: -0.427, y: 0.585, z: 0}
+  m_LocalScale: {x: 0.21904863, y: 0.21904863, z: 0.21904868}
+  m_Children: []
+  m_Father: {fileID: 187218814}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 35.714}
+--- !u!212 &884187791
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884187789}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 5.3, y: 2.59}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &921358398
 GameObject:
   m_ObjectHideFlags: 0
@@ -4027,6 +4115,16 @@ MonoBehaviour:
   wrapper: {fileID: 160609084}
   categoryPanel: {fileID: 109824137}
   sellPanel: {fileID: 1860732182}
+  fisher: {fileID: 406473863}
+  equipColors:
+  - name: Red
+    color: {r: 0.8490566, g: 0.11614456, b: 0.11614456, a: 1}
+  - name: Blue
+    color: {r: 0.117647074, g: 0.36888748, b: 0.8509804, a: 1}
+  - name: Green
+    color: {r: 0.117647074, g: 0.8509804, b: 0.37199283, a: 1}
+  - name: Dark
+    color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
 --- !u!1 &1705060728
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using AnttiStarterKit.Animations;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,6 +10,8 @@ public class Fisher : MonoBehaviour
     public Camera cam;
     public Animator anim;
     public LayerMask lakeMask;
+    public SpriteRenderer shirtSprite, hatSprite, rodSprite;
+    public List<Sprite> hatSprites;
     
     public Shop shop;
     public Inventory inventory;
@@ -114,5 +117,23 @@ public class Fisher : MonoBehaviour
         TurnTowards(pos);
 
         return true;
+    }
+
+    public void Equip(EquipItem item)
+    {
+        switch (item.Slot)
+        {
+            case EquipSlot.Shirt:
+                shirtSprite.color = item.Color;
+                break;
+            case EquipSlot.Hat:
+                hatSprite.color = item.Color;
+                hatSprite.sprite = hatSprites[item.SpriteIndex];
+                break;
+            case EquipSlot.Hook:
+                break;
+            case EquipSlot.Rod:
+                break;
+        }
     }
 }

@@ -12,12 +12,37 @@ public class Shop : MonoBehaviour
 
     public InventoryPanel categoryPanel;
     public InventoryPanel sellPanel;
+    public Fisher fisher;
+
+    public List<EquipColor> equipColors;
     
     public bool IsOpen { get; private set; }
+
+    private List<ShopItem> itemPool;
 
     private void Start()
     {
         Close();
+        itemPool = new List<ShopItem>();
+        equipColors.ForEach(c =>
+        {
+            itemPool.Add(new EquipItem
+            {
+                Name = c.name + " Shirt",
+                Price = 50,
+                Slot = EquipSlot.Shirt,
+                Color = c.color
+            });
+            
+            itemPool.Add(new EquipItem
+            {
+                Name = c.name + " Bucket Hat",
+                Price = 50,
+                Slot = EquipSlot.Hat,
+                Color = c.color,
+                SpriteIndex = 0
+            });
+        });
     }
 
     private void UpdateSellMenu(Container items)
@@ -58,7 +83,31 @@ public class Shop : MonoBehaviour
         categoryPanel.title.text = "Shop";
         CreateCategory("Sell all", "Sell all fish", () => SellAll(bag));
         CreateCategory("Sell", "Something", () => UpdateSellMenu(bag));
+        CreateCategory("Buy", "Stuff", UpdateBuyMenu);
         CreateCategory("Close", "Leave shop", Close);
+    }
+
+    private void UpdateBuyMenu()
+    {
+        itemPool.ForEach(item =>
+        {
+            var btn = Instantiate(buttonPrefab, sellPanel.container);
+            sellPanel.Add(btn.gameObject);
+            btn.nameText.text = item.Name;
+            btn.descText.text = "Lorem ipsum";
+            btn.priceText.text = item.Price.ToString();
+            btn.button.onClick.AddListener(() =>
+            {
+                if (!item.Repeatable)
+                {
+                    itemPool.Remove(item);
+                    Destroy(btn.gameObject);                    
+                }
+                
+                inventory.AddMoney(-item.Price);
+                item.Buy(fisher);
+            });
+        });
     }
 
     private void SellAll(Container bag)
@@ -96,4 +145,49 @@ public class Shop : MonoBehaviour
         
         Open(bag);
     }
+}
+
+public class ShopItem
+{
+    public string Name { get; set; }
+    public int Price { get; set; }
+    
+    public bool Repeatable { get; set; }
+
+    public virtual void Buy(Fisher fisher)
+    {
+    }
+}
+
+public class EquipItem : ShopItem
+{
+    public Color Color { get; set; } = Color.white;
+    public EquipSlot Slot;
+    public int SpriteIndex { get; set; } = -1;
+
+    public override void Buy(Fisher fisher)
+    {
+        base.Buy(fisher);
+        Equip(fisher);
+    }
+
+    protected virtual void Equip(Fisher fisher)
+    {
+        fisher.Equip(this);
+    }
+}
+
+public enum EquipSlot
+{
+    Shirt,
+    Hat,
+    Rod,
+    Hook
+}
+
+[Serializable]
+public struct EquipColor
+{
+    public string name;
+    public Color color;
 }
