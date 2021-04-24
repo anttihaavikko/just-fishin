@@ -26,4 +26,14 @@ public class Container
     {
         return _contents;
     }
+
+    public void Remove(Fish fish)
+    {
+        _contents.Remove(fish);
+    }
+
+    public void Clear()
+    {
+        _contents.Clear();
+    }
 }
