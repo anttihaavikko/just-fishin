@@ -23,7 +23,6 @@ public class Shop : MonoBehaviour
 
     private void Start()
     {
-        Close();
         _itemPool = new List<ShopItem>
         {
             new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
@@ -53,6 +52,8 @@ public class Shop : MonoBehaviour
                 SpriteIndex = 0
             });
         });
+        
+        Close();
     }
 
     private void UpdateSellMenu(Container items)

@@ -10,7 +10,7 @@ public class InventoryPanel : MonoBehaviour
 
     private List<GameObject> _items;
     
-    private void Start()
+    private void Awake()
     {
         _items = new List<GameObject>();
     }
