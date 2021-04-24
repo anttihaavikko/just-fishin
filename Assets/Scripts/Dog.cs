@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -10,6 +11,8 @@ public class Dog : HasContainer
     public Inventory inventory;
     public Animator anim;
     public List<SpriteRenderer> colorSprites;
+    public Seeker seeker;
+    public LayerMask lakeMask;
 
     private Vector3 _movePos;
     private Container _bag;
@@ -17,6 +20,8 @@ public class Dog : HasContainer
     private HasContainer _targetContainer;
     private bool _selling;
     private static readonly int Moving = Animator.StringToHash("moving");
+    private bool _needsPathFinding;
+    private int _pathIndex;
 
     private void Start()
     {
@@ -60,7 +65,7 @@ public class Dog : HasContainer
     {
         if (_targetContainer)
         {
-            _movePos = _targetContainer.transform.position + GetRandomOffset();
+            FindPath(_targetContainer.transform.position + GetRandomOffset());
             return;
         }
 
@@ -70,7 +75,23 @@ public class Dog : HasContainer
             return;
         }
 
-        _movePos = transform.position + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
+        FindPath(transform.position + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0));
+    }
+
+    private void FindPath(Vector3 target)
+    {
+        var p = transform.position;
+        var dir = target - p;
+        _needsPathFinding = Physics2D.Raycast(p, dir, dir.magnitude, lakeMask);
+            
+        if (_needsPathFinding)
+        {
+            seeker.StartPath(p, target);
+            _pathIndex = 0;
+            return;
+        }
+
+        _movePos = target;
     }
 
     public static Vector3 GetRandomOffset(float amount = 1f)
@@ -81,15 +102,34 @@ public class Dog : HasContainer
     private void GoSell()
     {
         _waiting = false;
-        _movePos = inventory.storeSpot.position + GetRandomOffset(0.2f);
+        FindPath(inventory.storeSpot.position + GetRandomOffset(0.2f));
         _selling = true;
     }
 
     private void Move()
     {
+        var curPath = seeker.GetCurrentPath();
+        
+        if (_needsPathFinding)
+        {
+            if (!seeker.IsDone() || curPath == null)
+            {
+                anim.SetBool(Moving, false);
+                return;
+            }
+        
+            _movePos = curPath.vectorPath[_pathIndex];
+        }
+        
         var t = transform;
         var position = t.position;
         var moving = (_movePos - position).magnitude > 0.6f;
+        
+        if (_needsPathFinding && !moving && _pathIndex < curPath.vectorPath.Count - 1)
+        {
+            _pathIndex++;
+            return;
+        }
 
         if (inventory.fisher.shop.IsOpen)
         {
