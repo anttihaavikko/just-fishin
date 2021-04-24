@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using AnttiStarterKit.Animations;
+using AnttiStarterKit.Managers;
 using Pathfinding;
 using UnityEngine;
+using AnttiStarterKit.Extensions;
 using Random = UnityEngine.Random;
 
 public class Fisher : HasContainer
@@ -125,6 +127,7 @@ public class Fisher : HasContainer
             _isFishing = false;
             anim.SetBool(Fishing, false);
 
+            EffectManager.Instance.AddEffect(1, marker.transform.position);
             Invoke(nameof(ResetMarker), 0.1f);
 
             _bag.Add(GetRandomFish());
@@ -159,6 +162,8 @@ public class Fisher : HasContainer
         Tweener.Instance.MoveLocalTo(marker, _markerRest, 0.2f, 0, TweenEasings.QuadraticEaseIn);
         Tweener.Instance.RotateTo(marker, Quaternion.identity, 0.2f, 0f, TweenEasings.QuadraticEaseIn);
         splash.SetActive(false);
+        var p = marker.transform.position;
+        EffectManager.Instance.AddEffect(0, p);
     }
 
     private bool CanStartFishing(Vector3 pos)
@@ -169,6 +174,8 @@ public class Fisher : HasContainer
         splash.transform.parent = null;
         splash.transform.position = pos + Vector3.down * 0.1f;
         splash.SetActive(true);
+
+        this.StartCoroutine(() => EffectManager.Instance.AddEffect(0, pos), 0.2f);
 
         marker.parent = null;
         Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);
