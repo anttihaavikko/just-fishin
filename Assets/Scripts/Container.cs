@@ -53,4 +53,10 @@ public class Container
     {
         return _contents.Count >= _maxSize;
     }
+
+    public void SetMaxSize(int max)
+    {
+        Debug.Log("Bag max size now " + max);
+        _maxSize = max;
+    }
 }

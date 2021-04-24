@@ -15,6 +15,8 @@ public class Dog : HasContainer
     public Seeker seeker;
     public LayerMask lakeMask;
     public Transform faceHolder;
+    public GameObject fishHolder;
+    public SpriteRenderer fish;
 
     private Vector3 _movePos;
     private Container _bag;
@@ -152,10 +154,11 @@ public class Dog : HasContainer
             
             if (_targetContainer != null && (_targetContainer.transform.position - position).magnitude < 1.5f)
             {
-                var fish = _targetContainer.GetFish();
-                if (fish != null)
+                var f = _targetContainer.GetFish();
+                if (f != null)
                 {
-                    _bag.Add((Fish)fish);   
+                    fishHolder.SetActive(true);
+                    _bag.Add((Fish)f);   
                 }
             }
             Invoke(nameof(GetTarget), GetDelay());
@@ -171,10 +174,11 @@ public class Dog : HasContainer
 
     private void Sell()
     {
-        Debug.Log("Sold " + _bag.GetCount() + " fish.");
+        // Debug.Log("Sold " + _bag.GetCount() + " fish.");
         inventory.fisher.shop.SellAll(_bag);
         _selling = false;
         Invoke(nameof(GetTarget), GetDelay());
+        fishHolder.SetActive(false);
     }
 
     private static float GetDelay()

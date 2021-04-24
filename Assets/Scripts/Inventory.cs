@@ -45,11 +45,21 @@ public class Inventory : MonoBehaviour
     
     public void ApplyUpgrade(Upgrade item)
     {
-        if (item == Upgrade.Dog)
+        InitOrIncrement(item);
+
+        switch (item)
         {
-            AddDog(Color.white);
+            case Upgrade.Dog:
+                AddDog(Color.white);
+                break;
+            case Upgrade.BagSpace:
+                fisher.ScaleBag();
+                break;
         }
-        
+    }
+
+    private void InitOrIncrement(Upgrade item)
+    {
         if (!_upgrades.ContainsKey(item))
         {
             _upgrades.Add(item, 1);

@@ -16,6 +16,7 @@ public class Fisher : HasContainer
     public Seeker seeker;
     public Transform faceHolder;
     public Transform marker;
+    public Transform bagSprite;
     
     public Shop shop;
     public Inventory inventory;
@@ -190,6 +191,14 @@ public class Fisher : HasContainer
         }
     }
 
+    public void ScaleBag()
+    {
+        var level = inventory.GetLevel(Upgrade.BagSpace);
+        var size = Mathf.Pow(1.2f, level);
+        Tweener.Instance.ScaleTo(bagSprite, Vector3.one * size, 0.2f, 0f, TweenEasings.BounceEaseOut);
+        _bag.SetMaxSize(5 + 5 * level);
+    }
+
     public bool HasFish()
     {
         return _bag.GetCount() > 0;
@@ -197,7 +206,6 @@ public class Fisher : HasContainer
 
     public override Fish? GetFish()
     {
-        Debug.Log("Get fish from container");
         return _bag.GetFish();
     }
 }
