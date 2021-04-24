@@ -28,7 +28,8 @@ public class Shop : MonoBehaviour
             new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
             new UpgradeItem {Name = "Patron", Description = "Decreases buy prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Patron},
             new UpgradeItem {Name = "Bigger Bag", Description = "+5 bag space", Price = 100, Repeatable = true, Type = Upgrade.BagSpace},
-            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader}
+            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader},
+            new UpgradeItem {Name = "Dog", Description = "Lovely helper pet", Price = 300, Repeatable = true, Type = Upgrade.Dog}
         };
 
         equipColors.ForEach(c =>
@@ -241,5 +242,6 @@ public enum Upgrade
     Haggle,
     Patron,
     BagSpace,
-    BulkTrader
+    BulkTrader,
+    Dog
 }

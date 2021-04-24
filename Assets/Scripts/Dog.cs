@@ -9,6 +9,7 @@ public class Dog : MonoBehaviour
 {
     public Inventory inventory;
     public Animator anim;
+    public List<SpriteRenderer> colorSprites;
 
     private Vector3 _movePos;
     private Container _bag;
@@ -27,6 +28,11 @@ public class Dog : MonoBehaviour
     private void Update()
     {
         Move();
+    }
+
+    public void SetColor(Color color)
+    {
+        colorSprites.ForEach(s => s.color = color);
     }
 
     private void GetTarget()
@@ -68,7 +74,7 @@ public class Dog : MonoBehaviour
         _movePos = transform.position + new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f), 0);
     }
 
-    private static Vector3 GetRandomOffset(float amount = 1f)
+    public static Vector3 GetRandomOffset(float amount = 1f)
     {
         return new Vector3(Random.Range(-amount, amount), Random.Range(-amount, amount), 0);
     }
