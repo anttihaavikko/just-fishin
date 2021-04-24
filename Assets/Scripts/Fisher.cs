@@ -17,6 +17,7 @@ public class Fisher : HasContainer
     public Transform faceHolder;
     public Transform marker;
     public Transform bagSprite;
+    public GameObject splash;
     
     public Shop shop;
     public Inventory inventory;
@@ -157,12 +158,17 @@ public class Fisher : HasContainer
         marker.parent = _markerParent;
         Tweener.Instance.MoveLocalTo(marker, _markerRest, 0.2f, 0, TweenEasings.QuadraticEaseIn);
         Tweener.Instance.RotateTo(marker, Quaternion.identity, 0.2f, 0f, TweenEasings.QuadraticEaseIn);
+        splash.SetActive(false);
     }
 
     private bool CanStartFishing(Vector3 pos)
     {
         var hit = Physics2D.OverlapCircle(pos, 0.1f, lakeMask);
         if (!hit || (transform.position - pos).magnitude > 5f) return false;
+
+        splash.transform.parent = null;
+        splash.transform.position = pos + Vector3.down * 0.1f;
+        splash.SetActive(true);
 
         marker.parent = null;
         Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);
