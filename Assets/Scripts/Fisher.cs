@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using AnttiStarterKit.Animations;
+using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,6 +13,7 @@ public class Fisher : HasContainer
     public LayerMask lakeMask;
     public SpriteRenderer shirtSprite, hatSprite, rodSprite;
     public List<Sprite> hatSprites;
+    public Seeker seeker;
     
     public Shop shop;
     public Inventory inventory;
@@ -20,9 +22,12 @@ public class Fisher : HasContainer
     private bool _isFishing;
 
     private Container _bag;
-    
+
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
+    private int _pathIndex;
+
+    private bool _needsPathFinding;
 
     private void Start()
     {
@@ -45,9 +50,28 @@ public class Fisher : HasContainer
 
     private void Move()
     {
+        var curPath = seeker.GetCurrentPath();
+        
+        if (_needsPathFinding)
+        {
+            if (!seeker.IsDone() || curPath == null)
+            {
+                anim.SetBool(Moving, false);
+                return;
+            }
+        
+            _movePos = curPath.vectorPath[_pathIndex];
+        }
+
         var t = transform;
         var position = t.position;
         var moving = (_movePos - position).magnitude > 0.1f;
+
+        if (_needsPathFinding && !moving && _pathIndex < curPath.vectorPath.Count - 1)
+        {
+            _pathIndex++;
+            return;
+        }
         
         anim.SetBool(Moving, moving);
 
@@ -86,9 +110,6 @@ public class Fisher : HasContainer
             anim.SetBool(Fishing, false);
 
             _bag.Add(GetRandomFish());
-            
-            // Debug.Log("Bag has " + _bag.GetCount());
-            // bag.GetContents().ForEach(fish => Debug.Log(fish.name));
 
             return;
         }
@@ -99,7 +120,18 @@ public class Fisher : HasContainer
 
         if (!CanStartFishing(mouseInWorld))
         {
-            _movePos = mouseInWorld;   
+            var p = transform.position;
+            var dir = mouseInWorld - p;
+            _needsPathFinding = Physics2D.Raycast(p, dir, dir.magnitude, lakeMask);
+            
+            if (_needsPathFinding)
+            {
+                seeker.StartPath(p, mouseInWorld);
+                _pathIndex = 0;
+                return;
+            }
+
+            _movePos = mouseInWorld;
         }
     }
 

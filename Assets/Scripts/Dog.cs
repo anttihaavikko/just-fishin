@@ -90,6 +90,12 @@ public class Dog : HasContainer
         var t = transform;
         var position = t.position;
         var moving = (_movePos - position).magnitude > 0.6f;
+
+        if (inventory.fisher.shop.IsOpen)
+        {
+            anim.SetBool(Moving, false);
+            return;
+        }
         
         anim.SetBool(Moving, moving);
 
