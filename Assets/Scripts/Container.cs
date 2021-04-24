@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Container
 {
+    public UnityAction<string> onUpdate;
+    
     private int _maxSize = 5;
     private readonly List<Fish> _contents;
 
@@ -17,7 +20,13 @@ public class Container
     {
         if (_contents.Count >= _maxSize) return false;
         _contents.Add(fish);
+        UpdateCount();
         return true;
+    }
+
+    private void UpdateCount()
+    {
+        onUpdate?.Invoke(_contents.Any() ? _contents.Count + "/" + _maxSize : "");
     }
 
     public int GetCount()
@@ -33,11 +42,13 @@ public class Container
     public void Remove(Fish fish)
     {
         _contents.Remove(fish);
+        UpdateCount();
     }
 
     public void Clear()
     {
         _contents.Clear();
+        UpdateCount();
     }
 
     public Fish? GetFish()
@@ -46,6 +57,7 @@ public class Container
         
         var fish = _contents.First();
         _contents.Remove(fish);
+        UpdateCount();
         return fish;
     }
 
@@ -56,7 +68,6 @@ public class Container
 
     public void SetMaxSize(int max)
     {
-        Debug.Log("Bag max size now " + max);
         _maxSize = max;
     }
 }

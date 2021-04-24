@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AnttiStarterKit.Animations;
 using Pathfinding;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -33,6 +34,7 @@ public class Dog : HasContainer
     {
         _bag = new Container(1);
         _movePos = transform.position;
+        _bag.onUpdate = UpdateCountText;
     }
 
     private void Update()
@@ -191,8 +193,11 @@ public class Dog : HasContainer
     {
         var t = transform;
         var mirrored = t.position.x < position.x;
-        t.localScale = new Vector3(mirrored ? 1 : -1, 1, 1);
-        faceHolder.localScale = t.localScale;
+        var scl = new Vector3(mirrored ? 1 : -1, 1, 1);
+        t.localScale = scl;
+        faceHolder.localScale = scl;
+        countText.transform.localScale = scl;
+        countText.alignment = mirrored ? TextAlignmentOptions.Right : TextAlignmentOptions.Left;
     }
 
     public override Fish? GetFish()

@@ -13,6 +13,7 @@ public class Trap : HasContainer
     private void Start()
     {
         _contents = new Container(1);
+        _contents.onUpdate = UpdateCountText;
         
         Invoke(nameof(AddFish), 5f);
     }

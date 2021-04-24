@@ -6,6 +6,7 @@ using AnttiStarterKit.Managers;
 using Pathfinding;
 using UnityEngine;
 using AnttiStarterKit.Extensions;
+using TMPro;
 using Random = UnityEngine.Random;
 
 public class Fisher : HasContainer
@@ -48,6 +49,8 @@ public class Fisher : HasContainer
         _movePos = transform.position;
         _markerRest = marker.localPosition;
         _markerParent = marker.parent;
+
+        _bag.onUpdate = UpdateCountText;
     }
 
     private void Update()
@@ -107,8 +110,11 @@ public class Fisher : HasContainer
     {
         var t = transform;
         var mirrored = t.position.x < position.x;
-        t.localScale = new Vector3(mirrored ? 1 : -1, 1, 1);
-        faceHolder.localScale = t.localScale;
+        var scl = new Vector3(mirrored ? 1 : -1, 1, 1);
+        t.localScale = scl;
+        faceHolder.localScale = scl;
+        countText.transform.localScale = scl;
+        countText.alignment = mirrored ? TextAlignmentOptions.Right : TextAlignmentOptions.Left;
     }
 
     public static Fish GetRandomFish()
