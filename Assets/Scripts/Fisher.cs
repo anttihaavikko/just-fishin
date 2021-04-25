@@ -47,12 +47,13 @@ public class Fisher : HasContainer
     private bool _fishingDone = true;
     
     private Coroutine _fishingCoroutine;
+    private Fish _currentFish;
+    private EquipItem _heldTrap;
 
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
     private static readonly int Holding = Animator.StringToHash("holding");
     private static readonly int Pull = Animator.StringToHash("pull");
-    private Fish _currentFish;
 
     private void Start()
     {
@@ -300,6 +301,7 @@ public class Fisher : HasContainer
             {
                 Hold(false);
                 var trap = Instantiate(trapPrefab, edge.point, Quaternion.identity);
+                Gear.Remove(_heldTrap);
                 trap.inventory = inventory;
                 if (inventory.HasUpgrade(Upgrade.BigTraps))
                 {
@@ -355,6 +357,10 @@ public class Fisher : HasContainer
                 break;
             case EquipSlot.Rod:
                 rodSprite.color = item.Color;
+                break;
+            case EquipSlot.Trap:
+                _heldTrap = item;
+                Hold(true);
                 break;
         }
     }

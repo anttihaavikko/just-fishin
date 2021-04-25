@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour
 
     private void Start()
     {
+        traps = new List<Trap>();
         _dogs = new List<Dog>();
         _upgrades = new Dictionary<Upgrade, int>();
     }

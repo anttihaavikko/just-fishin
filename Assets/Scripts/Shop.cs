@@ -45,6 +45,14 @@ public class Shop : MonoBehaviour
         {
             new EquipItem
             {
+                Name = "Trap",
+                Description = "A simple wooden fish trap",
+                Price = 50,
+                Repeatable = true,
+                Slot = EquipSlot.Trap
+            },
+            new EquipItem
+            {
                 Name = "Newbie Rod",
                 Description = "A decent rod for beginners",
                 Price = 50,
@@ -315,13 +323,13 @@ public class Shop : MonoBehaviour
         {
             var btn = CreateCategory(e.Name, e.Description, () =>
             {
-                if (!e.Equipped)
+                if (!e.Equipped || e.Slot == EquipSlot.Trap)
                 {
                     fisher.Equip(e);
                     PopulateInventory();   
                 }
             });
-            if (e.Equipped)
+            if (e.Equipped && e.Slot != EquipSlot.Trap)
             {
                 btn.priceText.text = "E";
             }
@@ -498,7 +506,8 @@ public enum EquipSlot
     Shirt,
     Hat,
     Rod,
-    Hook
+    Hook,
+    Trap
 }
 
 [Serializable]
