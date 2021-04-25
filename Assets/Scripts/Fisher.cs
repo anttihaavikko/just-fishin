@@ -172,7 +172,10 @@ public class Fisher : HasContainer
             _isFishing = false;
             _fishingDone = false;
 
-            EffectManager.Instance.AddEffect(1, marker.transform.position);
+            var pos = marker.transform.position;
+            EffectManager.Instance.AddEffect(1, pos);
+            SplashSound(pos);
+            
             Invoke(nameof(ResetMarker), 0.1f);
 
             this.StartCoroutine(() => _fishingDone = true, _biteActive ? 1.2f : 0.1f);
@@ -260,10 +263,17 @@ public class Fisher : HasContainer
         Tweener.Instance.MoveFor(marker, Vector3.down * 0.2f, 0.2f, 0, TweenEasings.QuadraticEaseIn);
         EffectManager.Instance.AddEffect(0, pos);
         EffectManager.Instance.AddEffect(1, pos + Vector3.down * 0.2f);
+        SplashSound(pos);
+    }
+
+    public static void SplashSound(Vector3 pos)
+    {
+        AudioManager.Instance.PlayEffectAt(Random.Range(0, 4), pos, 6f);
     }
 
     private void ResetBite(Vector3 pos)
     {
+        SplashSound(pos);
         Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);
     }
 
@@ -304,7 +314,11 @@ public class Fisher : HasContainer
         splash.transform.position = pos + Vector3.down * 0.1f;
         splash.SetActive(true);
 
-        this.StartCoroutine(() => EffectManager.Instance.AddEffect(0, pos), 0.2f);
+        this.StartCoroutine(() =>
+        {
+            SplashSound(pos);
+            EffectManager.Instance.AddEffect(0, pos);
+        }, 0.2f);
 
         marker.parent = null;
         Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);

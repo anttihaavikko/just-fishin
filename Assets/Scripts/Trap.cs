@@ -55,6 +55,9 @@ public class Trap : HasContainer
         var p = fish.transform.position;
         EffectManager.Instance.AddEffect(0, p);
         EffectManager.Instance.AddEffect(1, p);
+        
+        Fisher.SplashSound(p);
+        
         var f = inventory.fisher.GetRandomFish();
         _contents.Add(f);
         fish.color = _contents.GetColor();
