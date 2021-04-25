@@ -65,7 +65,7 @@ public class Shop : MonoBehaviour
         
         if (items.GetCount() == 0) return;
         
-        sellPanel.title.text = canSell ? "" : "Held fish";
+        sellPanel.title.text = canSell ? "Sell fish" : "Held fish";
         
         items.GetContents().ForEach(item =>
         {
@@ -110,12 +110,20 @@ public class Shop : MonoBehaviour
         categoryPanel.title.text = "Inventory";
         CreateCategory("Close", "Done for now", Close);
         CreateSpacer(categoryPanel.container);
-        CreateCategory("Quit", ":(", Application.Quit);
+        CreateCategory("Quit", ":(", PopulateConfirmation);
+    }
+
+    private void PopulateConfirmation()
+    {
+        sellPanel.Clear();
+        sellPanel.title.text = "Are you sure?";
+        CreateInventoryItem("Yes", "So sad...", Application.Quit, sellPanel);
+        CreateInventoryItem("No", "Oopsie doopsie!", sellPanel.Clear, sellPanel);
     }
 
     private void PopulateCategories(Container bag)
     {
-        categoryPanel.title.text = "Shop or Donald Behr";
+        categoryPanel.title.text = "Shop of Donald Behr";
         if (inventory.HasUpgrade(Upgrade.BulkTrader))
         {
             CreateCategory("Sell all", "Sell all fish", () => SellAll(bag));   
@@ -125,7 +133,7 @@ public class Shop : MonoBehaviour
         CreateCategory("Close", "Leave shop", Close);
         
         CreateSpacer(categoryPanel.container);
-        CreateCategory("Quit", ":(", Application.Quit);
+        CreateCategory("Quit", ":(", PopulateConfirmation);
     }
 
     private void CreateSpacer(Transform panel)
@@ -138,7 +146,7 @@ public class Shop : MonoBehaviour
     {
         sellPanel.Clear();
         
-        sellPanel.title.text = "";
+        sellPanel.title.text = "In stock";
         
         _itemPool.ForEach(item =>
         {
@@ -171,15 +179,20 @@ public class Shop : MonoBehaviour
         bag.Clear();
         sellPanel.Clear();
     }
-
-    private void CreateCategory(string title, string desc, Action action)
+    
+    private void CreateInventoryItem(string title, string desc, Action action, InventoryPanel panel)
     {
-        var btn = Instantiate(buttonPrefab, categoryPanel.container);
-        categoryPanel.Add(btn.gameObject);
+        var btn = Instantiate(buttonPrefab, panel.container);
+        panel.Add(btn.gameObject);
         btn.nameText.text = title;
         btn.descText.text = desc;
         btn.priceText.text = "";
         btn.button.onClick.AddListener(action.Invoke);
+    }
+
+    private void CreateCategory(string title, string desc, Action action)
+    {
+        CreateInventoryItem(title, desc, action, categoryPanel);
     }
 
     private void Close()
