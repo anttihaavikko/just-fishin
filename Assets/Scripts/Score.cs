@@ -11,7 +11,7 @@ using UnityEngine.Serialization;
 public class Score : MonoBehaviour
 {
     public TMP_Text display, addition;
-    [FormerlySerializedAs("additionAppearer")] public MyAppearer additionMyAppearer;
+    public MyAppearer additionMyAppearer;
 
     private int score;
     private float shownScore;
@@ -19,7 +19,7 @@ public class Score : MonoBehaviour
 
     private void Update()
     {
-        var scrollSpeed = Mathf.Max(10f, score - shownScore);
+        var scrollSpeed = Mathf.Abs(score - shownScore);
         shownScore = Mathf.MoveTowards(shownScore, score, Time.deltaTime * scrollSpeed * 2f);
         display.text = ScoreString(shownScore);
     }
