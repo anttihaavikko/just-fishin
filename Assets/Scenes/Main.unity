@@ -2777,14 +2777,14 @@ MonoBehaviour:
   fishSprite: {fileID: 923372620}
   fishList:
   - name: Anchovy
-    price: 3
+    price: 4
     description: A small, common forage fish
     color: {r: 0.54512286, g: 0.628027, b: 0.6603774, a: 1}
     size: 0.5
     difficulty: 1
     speed: 1.3
   - name: Salmon
-    price: 25
+    price: 40
     description: Ray-finned fish in the family Salmonidae
     color: {r: 0.764151, g: 0.64520293, b: 0.64520293, a: 1}
     size: 1.2
@@ -2805,7 +2805,7 @@ MonoBehaviour:
     difficulty: 3
     speed: 1.4
   - name: Black Bass
-    price: 5
+    price: 8
     description: Sometimes erroneously called black trout
     color: {r: 0.509434, g: 0.6792453, b: 0.53114223, a: 1}
     size: 1
@@ -2833,14 +2833,14 @@ MonoBehaviour:
     difficulty: 5
     speed: 1.7
   - name: Snapper
-    price: 18
+    price: 55
     description: Snappers harbour parasites
     color: {r: 0.85882354, g: 0.5962942, b: 0.29411772, a: 1}
     size: 1.5
     difficulty: 4
     speed: 1.2
   - name: Haddock
-    price: 7
+    price: 17
     description: The true cod
     color: {r: 0.4968405, g: 0.71967185, b: 0.7264151, a: 1}
     size: 1.2
@@ -2868,14 +2868,14 @@ MonoBehaviour:
     difficulty: 3
     speed: 1.6
   - name: Perch
-    price: 4
+    price: 7
     description: Somewhat long and rounded body
     color: {r: 0.5250534, g: 0.6509434, b: 0.5816808, a: 1}
     size: 0.8
     difficulty: 1
     speed: 1
   - name: Pollock
-    price: 5
+    price: 21
     description: Also known as pollack
     color: {r: 0.6698113, g: 0.6331897, b: 0.628738, a: 1}
     size: 0.8
@@ -2889,14 +2889,14 @@ MonoBehaviour:
     difficulty: 0
     speed: 1
   - name: Pilchard
-    price: 2
+    price: 1
     description: Small and oily forage fish
     color: {r: 0.6698113, g: 0.6698113, b: 0.6698113, a: 1}
     size: 0.5
     difficulty: 0
     speed: 1
   - name: Trout
-    price: 3
+    price: 11
     description: The only member of the subgenus Cristovomer
     color: {r: 0.5849056, g: 0.5362385, b: 0.4717871, a: 1}
     size: 1.1
