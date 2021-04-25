@@ -60,9 +60,14 @@ public class Fisher : HasContainer
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) ||
+            Input.GetKeyDown(KeyCode.Escape) ||
+            Input.GetKeyDown(KeyCode.I) || 
+            Input.GetKeyDown(KeyCode.E) ||
+            Input.GetMouseButtonDown(1))
         {
-            shop.Toggle(_bag);
+            var close = (transform.position - inventory.storeSpot.position).magnitude < 1f;
+            shop.Toggle(_bag, close);
         }
         
         Move();
@@ -156,8 +161,6 @@ public class Fisher : HasContainer
                 anim.SetTrigger(Pull);
                 _bag.Add(GetRandomFish());
             }
-            
-            
 
             _biteActive = false;
 

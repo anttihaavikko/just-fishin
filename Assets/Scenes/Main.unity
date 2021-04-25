@@ -5484,7 +5484,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 283, y: 38.7769}
+  m_SizeDelta: {x: 796.883, y: 38.777}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1224176900
 MonoBehaviour:
@@ -5981,7 +5981,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 283, y: 38.7769}
+  m_SizeDelta: {x: 689.412, y: 38.777}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1323693867
 MonoBehaviour:
@@ -7387,6 +7387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonPrefab: {fileID: 8350722279565404720, guid: aa20155331a8e4c8c923617d7753e851, type: 3}
+  spacerPrefab: {fileID: 5680044379343559071, guid: db43beab4e3134a4694586f5fe6982c6, type: 3}
   inventory: {fileID: 2144346782}
   wrapper: {fileID: 160609084}
   categoryPanel: {fileID: 109824137}

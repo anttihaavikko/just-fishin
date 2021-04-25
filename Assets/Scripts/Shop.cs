@@ -8,6 +8,7 @@ using UnityEngine.PlayerLoop;
 public class Shop : MonoBehaviour
 {
     public InventoryButton buttonPrefab;
+    public GameObject spacerPrefab;
     public Inventory inventory;
     public GameObject wrapper;
 
@@ -58,13 +59,13 @@ public class Shop : MonoBehaviour
         Close();
     }
 
-    private void UpdateSellMenu(Container items)
+    private void UpdateSellMenu(Container items, bool canSell = true)
     {
         sellPanel.Clear();
         
         if (items.GetCount() == 0) return;
         
-        sellPanel.title.text = "Sell fish";
+        sellPanel.title.text = canSell ? "" : "Held fish";
         
         items.GetContents().ForEach(item =>
         {
@@ -75,39 +76,69 @@ public class Shop : MonoBehaviour
             var multi = Mathf.Pow(1.1f, inventory.GetLevel(Upgrade.Haggle));
             var adjustedPrice = Mathf.RoundToInt(item.Price * multi);
             btn.priceText.text = adjustedPrice.ToString();
-            btn.button.onClick.AddListener(() =>
+            if (canSell)
             {
-                Destroy(btn.gameObject);
-                items.Remove(item);
-                inventory.AddMoney(adjustedPrice);
-            });
+                btn.button.onClick.AddListener(() =>
+                {
+                    Destroy(btn.gameObject);
+                    items.Remove(item);
+                    inventory.AddMoney(adjustedPrice);
+                });   
+            }
         });
     }
 
-    private void Open(Container bag)
+    private void Open(Container bag, bool shopping)
     {
         IsOpen = true;
         wrapper.SetActive(true);
-        
+
+        if (shopping)
+        {
+            categoryPanel.Clear();
+            PopulateCategories(bag);
+            return;
+        }
+
+        PopulateInventory();
+        UpdateSellMenu(bag, false);
+    }
+    
+    private void PopulateInventory()
+    {
         categoryPanel.Clear();
-        PopulateCategories(bag);
+        categoryPanel.title.text = "Inventory";
+        CreateCategory("Close", "Done for now", Close);
+        CreateSpacer(categoryPanel.container);
+        CreateCategory("Quit", ":(", Application.Quit);
     }
 
     private void PopulateCategories(Container bag)
     {
-        categoryPanel.title.text = "Shop";
+        categoryPanel.title.text = "Shop or Donald Behr";
         if (inventory.HasUpgrade(Upgrade.BulkTrader))
         {
             CreateCategory("Sell all", "Sell all fish", () => SellAll(bag));   
         }
-        CreateCategory("Sell", "Something", () => UpdateSellMenu(bag));
-        CreateCategory("Buy", "Stuff", UpdateBuyMenu);
+        CreateCategory("Sell", "Sell to D. Behr", () => UpdateSellMenu(bag));
+        CreateCategory("Buy", "Buy from D. Behr", UpdateBuyMenu);
         CreateCategory("Close", "Leave shop", Close);
+        
+        CreateSpacer(categoryPanel.container);
+        CreateCategory("Quit", ":(", Application.Quit);
+    }
+
+    private void CreateSpacer(Transform panel)
+    {
+        var spacer = Instantiate(spacerPrefab, panel);
+        categoryPanel.Add(spacer);
     }
 
     private void UpdateBuyMenu()
     {
         sellPanel.Clear();
+        
+        sellPanel.title.text = "";
         
         _itemPool.ForEach(item =>
         {
@@ -158,7 +189,7 @@ public class Shop : MonoBehaviour
         sellPanel.Clear();
     }
 
-    public void Toggle(Container bag)
+    public void Toggle(Container bag, bool shopping)
     {
         if (IsOpen)
         {
@@ -166,7 +197,7 @@ public class Shop : MonoBehaviour
             return;
         }
         
-        Open(bag);
+        Open(bag, shopping);
     }
 }
 
