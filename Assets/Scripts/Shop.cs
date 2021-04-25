@@ -56,7 +56,7 @@ public class Shop : MonoBehaviour
             {
                 Name = "Newbie Rod",
                 Description = "A decent rod for beginners",
-                Price = 50,
+                Price = 20,
                 Repeatable = false,
                 Slot = EquipSlot.Rod,
                 Color = equipColors[7].color,
@@ -66,7 +66,7 @@ public class Shop : MonoBehaviour
             {
                 Name = "Newbie Hook",
                 Description = "A decent hook for beginners",
-                Price = 50,
+                Price = 15,
                 Repeatable = false,
                 Slot = EquipSlot.Hook,
                 Level = 1
@@ -85,7 +85,7 @@ public class Shop : MonoBehaviour
             {
                 Name = "Classic Hook",
                 Description = "All around good hook",
-                Price = 200,
+                Price = 280,
                 Repeatable = false,
                 Slot = EquipSlot.Hook,
                 Level = 2
@@ -104,7 +104,7 @@ public class Shop : MonoBehaviour
             {
                 Name = "Pro Hook",
                 Description = "Very advanced hook made from titanium",
-                Price = 600,
+                Price = 550,
                 Repeatable = false,
                 Slot = EquipSlot.Hook,
                 Level = 3
