@@ -39,12 +39,14 @@ public class Fisher : HasContainer
     private bool _needsPathFinding;
     private bool _holding;
     private bool _biteActive;
+    private bool _fishingDone = true;
     
     private Coroutine _fishingCoroutine;
     
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
     private static readonly int Holding = Animator.StringToHash("holding");
+    private static readonly int Pull = Animator.StringToHash("pull");
 
     private void Start()
     {
@@ -141,16 +143,22 @@ public class Fisher : HasContainer
             StopCoroutine(_fishingCoroutine);
             
             _isFishing = false;
-            anim.SetBool(Fishing, false);
+            _fishingDone = false;
 
             EffectManager.Instance.AddEffect(1, marker.transform.position);
             Invoke(nameof(ResetMarker), 0.1f);
 
+            this.StartCoroutine(() => _fishingDone = true, _biteActive ? 1.2f : 0.1f);
+            this.StartCoroutine(() => anim.SetBool(Fishing, false), _biteActive ? 0.2f : 0f);
+
             if (_biteActive)
             {
+                anim.SetTrigger(Pull);
                 _bag.Add(GetRandomFish());
             }
             
+            
+
             _biteActive = false;
 
             return;
@@ -182,9 +190,9 @@ public class Fisher : HasContainer
         marker.parent = _markerParent;
         Tweener.Instance.MoveLocalTo(marker, _markerRest, 0.2f, 0, TweenEasings.QuadraticEaseIn);
         Tweener.Instance.RotateTo(marker, Quaternion.identity, 0.2f, 0f, TweenEasings.QuadraticEaseIn);
-        splash.SetActive(false);
         var p = marker.transform.position;
         EffectManager.Instance.AddEffect(0, p);
+        this.StartCoroutine(() => splash.SetActive(false), 0.2f);
     }
 
     private bool PickingTrap(Vector3 pos)
@@ -232,6 +240,8 @@ public class Fisher : HasContainer
 
     private bool CanStartFishing(Vector3 pos)
     {
+        if (!_fishingDone) return false;
+        
         if (PickingTrap(pos))
         {
             Hold(true);
