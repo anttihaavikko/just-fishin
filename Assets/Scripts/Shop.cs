@@ -37,9 +37,9 @@ public class Shop : MonoBehaviour
             new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
             new UpgradeItem {Name = "Patron", Description = "Decreases buy prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Patron},
             new UpgradeItem {Name = "Bigger Bag", Description = "+5 bag space", Price = 100, Repeatable = true, Type = Upgrade.BagSpace},
-            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader},
-            new UpgradeItem {Name = "Bigger Traps", Description = "Traps can hold up to 3 fish", Price = 100, Repeatable = false, Type = Upgrade.BigTraps},
-            new UpgradeItem {Name = "Advanced Traps", Description = "Traps get more fishing power", Price = 100, Repeatable = false, Type = Upgrade.BetterTraps},
+            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 250, Repeatable = false, Type = Upgrade.BulkTrader},
+            new UpgradeItem {Name = "Bigger Traps", Description = "Traps can hold up to 3 fish", Price = 300, Repeatable = false, Type = Upgrade.BigTraps},
+            new UpgradeItem {Name = "Advanced Traps", Description = "Traps get more fishing power", Price = 500, Repeatable = false, Type = Upgrade.BetterTraps},
         };
         
         _itemPool[EquipCategory] = new List<ShopItem>
@@ -136,7 +136,7 @@ public class Shop : MonoBehaviour
             {
                 Name = "Dog",
                 Description = "Lovely helper pet",
-                Price = 300,
+                Price = 250,
                 Repeatable = true,
                 Type = Upgrade.Dog
             },
@@ -144,7 +144,7 @@ public class Shop : MonoBehaviour
             {
                 Name = "Doggy Bag",
                 Description = "A bag for your dog",
-                Price = 300,
+                Price = 500,
                 Repeatable = false,
                 Type = Upgrade.DogBag
             }
