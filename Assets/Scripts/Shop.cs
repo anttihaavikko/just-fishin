@@ -108,6 +108,24 @@ public class Shop : MonoBehaviour
     {
         categoryPanel.Clear();
         categoryPanel.title.text = "Inventory";
+        
+        fisher.Gear.ForEach(e =>
+        {
+            var btn = CreateCategory(e.Name, e.Description, () =>
+            {
+                if (!e.Equipped)
+                {
+                    fisher.Equip(e);
+                    PopulateInventory();   
+                }
+            });
+            if (e.Equipped)
+            {
+                btn.priceText.text = "E";
+            }
+        });
+        
+        CreateSpacer(categoryPanel.container);
         CreateCategory("Close", "Done for now", Close);
         CreateSpacer(categoryPanel.container);
         CreateCategory("Quit", ":(", PopulateConfirmation);
@@ -180,7 +198,7 @@ public class Shop : MonoBehaviour
         sellPanel.Clear();
     }
     
-    private void CreateInventoryItem(string title, string desc, Action action, InventoryPanel panel)
+    private InventoryButton CreateInventoryItem(string title, string desc, Action action, InventoryPanel panel)
     {
         var btn = Instantiate(buttonPrefab, panel.container);
         panel.Add(btn.gameObject);
@@ -188,11 +206,12 @@ public class Shop : MonoBehaviour
         btn.descText.text = desc;
         btn.priceText.text = "";
         btn.button.onClick.AddListener(action.Invoke);
+        return btn;
     }
 
-    private void CreateCategory(string title, string desc, Action action)
+    private InventoryButton CreateCategory(string title, string desc, Action action)
     {
-        CreateInventoryItem(title, desc, action, categoryPanel);
+        return CreateInventoryItem(title, desc, action, categoryPanel);
     }
 
     private void Close()
@@ -256,6 +275,7 @@ public class UpgradeItem : ShopItem
 
 public class EquipItem : ShopItem
 {
+    public bool Equipped { get; set; } = false;
     public Color Color { get; set; } = Color.white;
     public EquipSlot Slot;
     public int SpriteIndex { get; set; } = -1;
@@ -263,6 +283,7 @@ public class EquipItem : ShopItem
     public override void Buy(Fisher fisher)
     {
         base.Buy(fisher);
+        fisher.Gear.Add(this);
         fisher.Equip(this);
     }
 }

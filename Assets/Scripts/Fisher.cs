@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Managers;
 using Pathfinding;
@@ -26,6 +27,8 @@ public class Fisher : HasContainer
     
     public Shop shop;
     public Inventory inventory;
+    
+    public List<EquipItem> Gear { get; private set; }
 
     private Vector3 _movePos;
     private bool _isFishing;
@@ -42,7 +45,7 @@ public class Fisher : HasContainer
     private bool _fishingDone = true;
     
     private Coroutine _fishingCoroutine;
-    
+
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
     private static readonly int Holding = Animator.StringToHash("holding");
@@ -50,12 +53,34 @@ public class Fisher : HasContainer
 
     private void Start()
     {
+        Gear = new List<EquipItem>();
         _bag = new Container();
         _movePos = transform.position;
         _markerRest = marker.localPosition;
         _markerParent = marker.parent;
 
         _bag.onUpdate = UpdateCountText;
+        
+        AddStarterGear();
+    }
+
+    private void AddStarterGear()
+    {
+        Gear.Add(new EquipItem
+        {
+            Name = "Twig",
+            Description = "Barely functions as a fishing rod",
+            Slot = EquipSlot.Rod,
+            Equipped = true
+        });
+
+        Gear.Add(new EquipItem
+        {
+            Name = "Rusty Hook",
+            Description = "Might actually deter fish from biting",
+            Slot = EquipSlot.Hook,
+            Equipped = true
+        });
     }
 
     private void Update()
@@ -294,6 +319,9 @@ public class Fisher : HasContainer
 
     public void Equip(EquipItem item)
     {
+        Gear.Where(e => e.Slot == item.Slot).ToList().ForEach(e => e.Equipped = false);
+        item.Equipped = true;
+        
         switch (item.Slot)
         {
             case EquipSlot.Shirt:
