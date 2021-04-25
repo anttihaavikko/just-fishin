@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AnttiStarterKit.Managers;
 using AnttiStarterKit.Utils;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -60,6 +61,7 @@ public class Inventory : MonoBehaviour
 
     public void AddMoney(int amount)
     {
+        AudioManager.Instance.PlayEffectAt(Random.Range(24, 26), storeSpot.position, 2f);
         _money += amount;
         scoreDisplay.Add(amount);
     }

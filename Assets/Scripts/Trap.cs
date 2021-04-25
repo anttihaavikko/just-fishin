@@ -50,6 +50,8 @@ public class Trap : HasContainer
         
         if (_contents.IsFull()) return;
         
+        inventory.fisher.effectCamera.BaseEffect(0.1f);
+        
         var quaternion = Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
         Tweener.Instance.RotateTo(transform, quaternion, 0.2f, 0, TweenEasings.BounceEaseOut);
         var p = fish.transform.position;

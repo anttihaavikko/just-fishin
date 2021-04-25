@@ -7,6 +7,7 @@ using AnttiStarterKit.Managers;
 using Pathfinding;
 using UnityEngine;
 using AnttiStarterKit.Extensions;
+using AnttiStarterKit.Visuals;
 using TMPro;
 using Random = UnityEngine.Random;
 
@@ -27,6 +28,7 @@ public class Fisher : HasContainer
     public SpriteRenderer fishSprite;
     public List<Fish> fishList;
     public MyAppearer speech, helpMessage;
+    public EffectCamera effectCamera;
 
     public Shop shop;
     public Inventory inventory;
@@ -271,6 +273,7 @@ public class Fisher : HasContainer
 
             if (_biteActive)
             {
+                effectCamera.BaseEffect(0.2f);
                 YaySound();
                 
                 anim.SetTrigger(Pull);
@@ -361,6 +364,7 @@ public class Fisher : HasContainer
 
     private void Bite()
     {
+        effectCamera.BaseEffect(0.1f);
         var pos = marker.position;
         Tweener.Instance.MoveFor(marker, Vector3.down * 0.2f, 0.2f, 0, TweenEasings.QuadraticEaseIn);
         EffectManager.Instance.AddEffect(0, pos);
@@ -375,6 +379,7 @@ public class Fisher : HasContainer
 
     private void ResetBite(Vector3 pos)
     {
+        effectCamera.BaseEffect(0.1f);
         NaySound();
         SplashSound(pos);
         Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);
