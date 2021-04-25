@@ -26,6 +26,7 @@ public class Fisher : HasContainer
     public Trap trapPrefab;
     public SpriteRenderer fishSprite;
     public List<Fish> fishList;
+    public MyAppearer speech;
 
     public Shop shop;
     public Inventory inventory;
@@ -156,6 +157,7 @@ public class Fisher : HasContainer
         t.localScale = scl;
         faceHolder.localScale = scl;
         countText.transform.localScale = scl;
+        
         countText.alignment = mirrored ? TextAlignmentOptions.Right : TextAlignmentOptions.Left;
     }
 
@@ -190,6 +192,8 @@ public class Fisher : HasContainer
             {
                 anim.SetTrigger(Pull);
                 _bag.Add(_currentFish);
+                speech.ShowWithText(_currentFish.name, 0f);
+                speech.HideWithDelay();
             }
 
             _biteActive = false;

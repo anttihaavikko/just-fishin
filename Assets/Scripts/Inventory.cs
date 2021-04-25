@@ -12,6 +12,7 @@ public class Inventory : MonoBehaviour
     public List<Trap> traps;
     public Transform storeSpot;
     public Dog dogPrefab;
+    public Score scoreDisplay;
     
     private int _money;
     private Dictionary<Upgrade, int> _upgrades;
@@ -60,6 +61,7 @@ public class Inventory : MonoBehaviour
     public void AddMoney(int amount)
     {
         _money += amount;
+        scoreDisplay.Add(amount);
         Debug.Log("Cash: " + _money);
     }
     
