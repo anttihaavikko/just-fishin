@@ -8,4 +8,6 @@ public struct Fish
     public string description;
     public Color color;
     public float size;
+    public int difficulty;
+    public float speed;
 }

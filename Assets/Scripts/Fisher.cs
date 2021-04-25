@@ -157,13 +157,6 @@ public class Fisher : HasContainer
 
     public Fish GetRandomFish()
     {
-        // var fish = new[]
-        // {
-        //     new Fish("Bass", "Lorem bass ipsum", 1, Color.green, 1f),
-        //     new Fish("Trout", "Lorem trout ipsum", 2, Color.blue, 1f),
-        //     new Fish("Salmon", "Lorem salmon ipsum", 3, Color.red, 1.5f)
-        // };
-
         return fishList[Random.Range(0, fishList.Count)];
     }
 
@@ -247,11 +240,13 @@ public class Fisher : HasContainer
         _currentFish = GetRandomFish();
         fishSprite.color = _currentFish.color;
         fishSprite.transform.localScale = _currentFish.size * Vector3.one;
-        yield return new WaitForSeconds(1f);
+        var waitTime = Random.Range(1f, 10f);
+        yield return new WaitForSeconds(waitTime);
         _biteActive = true;
         var pos = marker.position;
         Bite();
-        yield return new WaitForSeconds(1f);
+        var delay = Random.Range(0.5f, 1f);
+        yield return new WaitForSeconds(delay / _currentFish.speed);
         ResetBite(pos);
         _biteActive = false;
         
