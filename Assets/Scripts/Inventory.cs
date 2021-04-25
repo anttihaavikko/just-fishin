@@ -14,10 +14,14 @@ public class Inventory : MonoBehaviour
     public Transform storeSpot;
     public Dog dogPrefab;
     public Score scoreDisplay;
+
+    public List<MyAppearer> logoStuffs;
     
     private int _money;
     private Dictionary<Upgrade, int> _upgrades;
     private List<Dog> _dogs;
+
+    private bool _hasStarted;
 
     private void Start()
     {
@@ -28,7 +32,19 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
+        if (!_hasStarted && Input.anyKeyDown)
+        {
+            _hasStarted = true;
+            fisher.DoStart();
+            logoStuffs.ForEach(a => a.HideWithDelay());
+        }
+        
         if (!Application.isEditor) return;
+        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneChanger.Instance.ChangeScene("Main");
+        }
         
         if (Input.GetKeyDown(KeyCode.D))
         {

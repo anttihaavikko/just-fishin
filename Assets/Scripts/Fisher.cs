@@ -56,6 +56,8 @@ public class Fisher : HasContainer
     private int _rodLevel, _hookLevel;
 
     private TutorialMessage _tutorialProgress;
+    
+    private bool _hasStarted;
 
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
@@ -73,7 +75,11 @@ public class Fisher : HasContainer
         _bag.onUpdate = UpdateCountText;
 
         AddStarterGear();
+    }
 
+    public void DoStart()
+    {
+        _hasStarted = true;
         Invoke(nameof(ShowFishTutorial), 1f);
     }
 
@@ -126,6 +132,8 @@ public class Fisher : HasContainer
 
     private void Update()
     {
+        if (!_hasStarted) return;
+        
         if (Application.isEditor && Input.GetKeyDown(KeyCode.T))
         {
             Equip(new EquipItem
@@ -235,6 +243,8 @@ public class Fisher : HasContainer
     private void TurnTowards(Vector3 position)
     {
         var t = transform;
+        var diff = Mathf.Abs(t.position.x - position.x);
+        if (diff < 0.3f) return;
         var mirrored = t.position.x < position.x;
         var scl = new Vector3(mirrored ? 1 : -1, 1, 1);
         t.localScale = scl;
