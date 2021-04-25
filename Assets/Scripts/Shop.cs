@@ -176,7 +176,7 @@ public class Shop : MonoBehaviour
             {
                 Name = c.name + " Shirt",
                 Description = "Comfortable " + c.name.ToLower() + " t-shirt",
-                Price = 50,
+                Price = 10 + 10 * i,
                 Slot = EquipSlot.Shirt,
                 Color = c.color
             });
@@ -205,18 +205,9 @@ public class Shop : MonoBehaviour
         {
             pool.Add(new EquipItem
             {
-                Name = c.name + " Shirt",
-                Description = "Comfortable " + c.name.ToLower() + " t-shirt",
-                Price = 50,
-                Slot = EquipSlot.Shirt,
-                Color = c.color
-            });
-            
-            pool.Add(new EquipItem
-            {
                 Name = c.name + " Bucket Hat",
                 Description = "Practical " + c.name.ToLower() + " hat",
-                Price = 50,
+                Price = 25,
                 Slot = EquipSlot.Hat,
                 Color = c.color,
                 SpriteIndex = 0
@@ -226,7 +217,7 @@ public class Shop : MonoBehaviour
             {
                 Name = c.name + " Beanie",
                 Description = "Warm and fuzzy " + c.name.ToLower() + " beanie",
-                Price = 50,
+                Price = 35,
                 Slot = EquipSlot.Hat,
                 Color = c.color,
                 SpriteIndex = 1
@@ -256,7 +247,7 @@ public class Shop : MonoBehaviour
             {
                 Name = c.name + " Snap Cap",
                 Description = "Down to earth " + c.name.ToLower() + " cap",
-                Price = 75,
+                Price = 60,
                 Slot = EquipSlot.Hat,
                 Color = c.color,
                 SpriteIndex = 4
