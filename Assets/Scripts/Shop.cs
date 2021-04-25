@@ -292,7 +292,7 @@ public class Shop : MonoBehaviour
             btn.descText.text = item.description;
             var multi = Mathf.Pow(1.1f, inventory.GetLevel(Upgrade.Haggle));
             var adjustedPrice = Mathf.RoundToInt(item.price * multi);
-            btn.priceText.text = adjustedPrice.ToString();
+            btn.priceText.text = adjustedPrice + "<size=16> GP</size>";
             if (canSell)
             {
                 btn.button.onClick.AddListener(() =>
@@ -394,9 +394,19 @@ public class Shop : MonoBehaviour
             sellPanel.Add(btn.gameObject);
             btn.nameText.text = item.Name;
             btn.descText.text = item.Description;
-            btn.priceText.text = item.GetRealPrice(fisher).ToString();
+            var price = item.GetRealPrice(fisher);
+            btn.priceText.text = price + "<size=16> GP</size>";
+            var canAfford = inventory.CanAfford(price);
+
+            if (!canAfford)
+            {
+                btn.MakeDisabled();
+            }
+            
             btn.button.onClick.AddListener(() =>
             {
+                if (!canAfford) return;
+                
                 if (!item.Repeatable)
                 {
                     _itemPool[category].Remove(item);

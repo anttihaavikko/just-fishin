@@ -124,6 +124,18 @@ public class Fisher : HasContainer
 
     private void Update()
     {
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.T))
+        {
+            Equip(new EquipItem
+            {
+                Name = "Trap",
+                Description = "Dev Trap",
+                Slot = EquipSlot.Trap,
+                Price = 0,
+                Repeatable = true,
+            });
+        }
+        
         if (Input.GetKeyDown(KeyCode.Space) ||
             Input.GetKeyDown(KeyCode.Escape) ||
             Input.GetKeyDown(KeyCode.I) ||

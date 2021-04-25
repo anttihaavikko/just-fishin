@@ -62,7 +62,6 @@ public class Inventory : MonoBehaviour
     {
         _money += amount;
         scoreDisplay.Add(amount);
-        Debug.Log("Cash: " + _money);
     }
     
     public void ApplyUpgrade(Upgrade item)
@@ -105,5 +104,10 @@ public class Inventory : MonoBehaviour
     public bool HasUpgrade(Upgrade item)
     {
         return _upgrades.ContainsKey(item) && _upgrades[item] > 0;
+    }
+
+    public bool CanAfford(int price)
+    {
+        return _money >= price;
     }
 }
