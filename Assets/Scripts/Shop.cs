@@ -154,8 +154,10 @@ public class Shop : MonoBehaviour
     {
         categoryPanel.Clear();
         categoryPanel.title.text = "Inventory";
-        
-        fisher.Gear.ForEach(e =>
+
+        var reversed = fisher.Gear.ToList();
+        reversed.Reverse();
+        reversed.ForEach(e =>
         {
             var btn = CreateCategory(e.Name, e.Description, () =>
             {
