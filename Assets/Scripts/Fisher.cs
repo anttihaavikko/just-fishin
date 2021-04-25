@@ -102,7 +102,7 @@ public class Fisher : HasContainer
 
     private void ShowTutorial(TutorialMessage num)
     {
-        Debug.Log("Trying to start tutorial " + num + ", current progress is " + _tutorialProgress);
+        // Debug.Log("Trying to start tutorial " + num + ", current progress is " + _tutorialProgress);
         
         if (num < _tutorialProgress) return;
 
@@ -163,6 +163,21 @@ public class Fisher : HasContainer
 
         if (shop.IsOpen) return;
         CheckClick();
+    }
+    
+    public void StepSound()
+    {
+        AudioManager.Instance.PlayEffectAt(Random.Range(12, 17), transform.position, 14f);
+    }
+
+    private void YaySound()
+    {
+        AudioManager.Instance.PlayEffectAt(Random.Range(18, 24), transform.position, 4f);
+    }
+
+    private void NaySound()
+    {
+        AudioManager.Instance.PlayEffectAt(Random.Range(7, 12), transform.position, 5f);
     }
 
     public void OpenInventory()
@@ -256,6 +271,8 @@ public class Fisher : HasContainer
 
             if (_biteActive)
             {
+                YaySound();
+                
                 anim.SetTrigger(Pull);
                 _bag.Add(_currentFish);
                 speech.ShowWithText(_currentFish.name, 0f);
@@ -358,6 +375,7 @@ public class Fisher : HasContainer
 
     private void ResetBite(Vector3 pos)
     {
+        NaySound();
         SplashSound(pos);
         Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);
     }

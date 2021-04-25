@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AnttiStarterKit.Animations;
+using AnttiStarterKit.Managers;
 using Pathfinding;
 using TMPro;
 using UnityEngine;
@@ -164,6 +165,7 @@ public class Dog : HasContainer
                     _bag.Add((Fish)f);
                     fish.color = _bag.GetColor();
                     fish.transform.localScale = _bag.GetSize() * Vector3.one;
+                    AudioManager.Instance.PlayEffectAt(Random.Range(4, 7), transform.position, 7f);
                 }
             }
             Invoke(nameof(GetTarget), GetDelay());
@@ -175,6 +177,11 @@ public class Dog : HasContainer
         position = Vector3.MoveTowards(position, _movePos, 4f * Time.deltaTime);
         t.position = position;
         TurnTowards(_movePos);
+    }
+
+    public void StepSound()
+    {
+        AudioManager.Instance.PlayEffectAt(Random.Range(12, 17), transform.position, 12f);
     }
 
     private void Sell()
