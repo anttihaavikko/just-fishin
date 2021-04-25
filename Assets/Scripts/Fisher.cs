@@ -37,7 +37,10 @@ public class Fisher : HasContainer
     private Transform _markerParent;
 
     private bool _needsPathFinding;
-    private bool holding;
+    private bool _holding;
+    private bool _biteActive;
+    
+    private Coroutine _fishingCoroutine;
     
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
@@ -135,13 +138,20 @@ public class Fisher : HasContainer
 
         if (_isFishing)
         {
+            StopCoroutine(_fishingCoroutine);
+            
             _isFishing = false;
             anim.SetBool(Fishing, false);
 
             EffectManager.Instance.AddEffect(1, marker.transform.position);
             Invoke(nameof(ResetMarker), 0.1f);
 
-            _bag.Add(GetRandomFish());
+            if (_biteActive)
+            {
+                _bag.Add(GetRandomFish());
+            }
+            
+            _biteActive = false;
 
             return;
         }
@@ -191,6 +201,34 @@ public class Fisher : HasContainer
         }
         return picking;
     }
+    
+    // ReSharper disable once FunctionRecursiveOnAllPaths
+    private IEnumerator FishingCoroutine()
+    {
+        var f = GetRandomFish();
+        yield return new WaitForSeconds(1f);
+        _biteActive = true;
+        var pos = marker.position;
+        Bite();
+        yield return new WaitForSeconds(1f);
+        ResetBite(pos);
+        _biteActive = false;
+        
+        _fishingCoroutine = StartCoroutine(FishingCoroutine());
+    }
+
+    private void Bite()
+    {
+        var pos = marker.position;
+        Tweener.Instance.MoveFor(marker, Vector3.down * 0.2f, 0.2f, 0, TweenEasings.QuadraticEaseIn);
+        EffectManager.Instance.AddEffect(0, pos);
+        EffectManager.Instance.AddEffect(1, pos + Vector3.down * 0.2f);
+    }
+
+    private void ResetBite(Vector3 pos)
+    {
+        Tweener.Instance.MoveTo(marker, pos, 0.2f, 0, TweenEasings.QuadraticEaseIn);
+    }
 
     private bool CanStartFishing(Vector3 pos)
     {
@@ -203,7 +241,7 @@ public class Fisher : HasContainer
         var hitTrap = Physics2D.OverlapCircle(pos, 0.1f, trapMask);
         if (!hit || (transform.position - pos).magnitude > 5f || hitTrap) return false;
 
-        if (holding)
+        if (_holding)
         {
             var t = transform;
             var p = t.position;
@@ -235,6 +273,8 @@ public class Fisher : HasContainer
         _isFishing = true;
         
         TurnTowards(pos);
+
+        _fishingCoroutine = StartCoroutine(FishingCoroutine());
 
         return true;
     }
@@ -277,7 +317,7 @@ public class Fisher : HasContainer
 
     private void Hold(bool state)
     {
-        holding = state;
+        _holding = state;
         heldTrapSprite.gameObject.SetActive(state);
         anim.SetBool(Holding, state);
     }
