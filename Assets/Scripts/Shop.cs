@@ -36,7 +36,8 @@ public class Shop : MonoBehaviour
             new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
             new UpgradeItem {Name = "Patron", Description = "Decreases buy prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Patron},
             new UpgradeItem {Name = "Bigger Bag", Description = "+5 bag space", Price = 100, Repeatable = true, Type = Upgrade.BagSpace},
-            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader}
+            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader},
+            new UpgradeItem {Name = "Bigger Traps", Description = "Traps can hold up to 3 fish", Price = 100, Repeatable = false, Type = Upgrade.BigTraps},
         };
         
         _itemPool[EquipCategory] = new List<ShopItem>
@@ -117,10 +118,10 @@ public class Shop : MonoBehaviour
         {
             var btn = Instantiate(buttonPrefab, sellPanel.container);
             sellPanel.Add(btn.gameObject);
-            btn.nameText.text = item.Name;
-            btn.descText.text = item.Description;
+            btn.nameText.text = item.name;
+            btn.descText.text = item.description;
             var multi = Mathf.Pow(1.1f, inventory.GetLevel(Upgrade.Haggle));
-            var adjustedPrice = Mathf.RoundToInt(item.Price * multi);
+            var adjustedPrice = Mathf.RoundToInt(item.price * multi);
             btn.priceText.text = adjustedPrice.ToString();
             if (canSell)
             {
@@ -242,7 +243,7 @@ public class Shop : MonoBehaviour
 
     public void SellAll(Container bag)
     {
-        var total = bag.GetContents().Sum(item => item.Price);
+        var total = bag.GetContents().Sum(item => item.price);
         var multi = Mathf.Pow(1.1f, inventory.GetLevel(Upgrade.Haggle));
         inventory.AddMoney(Mathf.RoundToInt(total * multi));
         bag.Clear();
@@ -361,5 +362,6 @@ public enum Upgrade
     BagSpace,
     BulkTrader,
     Dog,
-    DogBag
+    DogBag,
+    BigTraps
 }

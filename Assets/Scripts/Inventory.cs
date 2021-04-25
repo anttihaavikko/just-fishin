@@ -65,6 +65,9 @@ public class Inventory : MonoBehaviour
             case Upgrade.DogBag:
                 _dogs.ForEach(d => d.AddBag());
                 break;
+            case Upgrade.BigTraps:
+                traps.ForEach(t => t.SetMaxSize(3));
+                break;
         }
     }
 

@@ -24,6 +24,8 @@ public class Fisher : HasContainer
     public GameObject splash;
     public SpriteRenderer heldTrapSprite;
     public Trap trapPrefab;
+    public SpriteRenderer fishSprite;
+    public List<Fish> fishList;
     
     public Shop shop;
     public Inventory inventory;
@@ -50,6 +52,7 @@ public class Fisher : HasContainer
     private static readonly int Fishing = Animator.StringToHash("fishing");
     private static readonly int Holding = Animator.StringToHash("holding");
     private static readonly int Pull = Animator.StringToHash("pull");
+    private Fish _currentFish;
 
     private void Start()
     {
@@ -152,16 +155,16 @@ public class Fisher : HasContainer
         countText.alignment = mirrored ? TextAlignmentOptions.Right : TextAlignmentOptions.Left;
     }
 
-    public static Fish GetRandomFish()
+    public Fish GetRandomFish()
     {
-        var fish = new[]
-        {
-            new Fish("Bass", "Lorem bass ipsum", 1),
-            new Fish("Trout", "Lorem trout ipsum", 2),
-            new Fish("Salmon", "Lorem salmon ipsum", 3)
-        };
+        // var fish = new[]
+        // {
+        //     new Fish("Bass", "Lorem bass ipsum", 1, Color.green, 1f),
+        //     new Fish("Trout", "Lorem trout ipsum", 2, Color.blue, 1f),
+        //     new Fish("Salmon", "Lorem salmon ipsum", 3, Color.red, 1.5f)
+        // };
 
-        return fish[Random.Range(0, fish.Length)];
+        return fishList[Random.Range(0, fishList.Count)];
     }
 
     private void CheckClick()
@@ -184,7 +187,7 @@ public class Fisher : HasContainer
             if (_biteActive)
             {
                 anim.SetTrigger(Pull);
-                _bag.Add(GetRandomFish());
+                _bag.Add(_currentFish);
             }
 
             _biteActive = false;
@@ -241,7 +244,9 @@ public class Fisher : HasContainer
     // ReSharper disable once FunctionRecursiveOnAllPaths
     private IEnumerator FishingCoroutine()
     {
-        var f = GetRandomFish();
+        _currentFish = GetRandomFish();
+        fishSprite.color = _currentFish.color;
+        fishSprite.transform.localScale = _currentFish.size * Vector3.one;
         yield return new WaitForSeconds(1f);
         _biteActive = true;
         var pos = marker.position;
@@ -289,6 +294,11 @@ public class Fisher : HasContainer
             {
                 Hold(false);
                 var trap = Instantiate(trapPrefab, edge.point, Quaternion.identity);
+                trap.inventory = inventory;
+                if (inventory.HasUpgrade(Upgrade.BigTraps))
+                {
+                    trap.SetMaxSize(3);
+                }
                 inventory.traps.Add(trap);
             }
             return false;

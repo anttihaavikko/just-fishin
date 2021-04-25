@@ -70,4 +70,14 @@ public class Container
     {
         _maxSize = max;
     }
+
+    public Color GetColor()
+    {
+        return !_contents.Any() ? Color.white : _contents.First().color;
+    }
+
+    public float GetSize()
+    {
+        return !_contents.Any() ? 1f : _contents.First().size;
+    }
 }

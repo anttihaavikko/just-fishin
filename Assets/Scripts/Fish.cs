@@ -1,13 +1,11 @@
+using UnityEngine;
+
+[System.Serializable]
 public struct Fish
 {
-    public readonly string Name;
-    public readonly int Price;
-    public readonly string Description;
-
-    public Fish(string name, string desc, int price)
-    {
-        Name = name;
-        Description = desc;
-        Price = price;
-    }
+    public string name;
+    public int price;
+    public string description;
+    public Color color;
+    public float size;
 }

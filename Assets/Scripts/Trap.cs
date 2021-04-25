@@ -1,23 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Managers;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Trap : HasContainer
 {
     public SpriteRenderer fish;
+    public Inventory inventory;
     
     private Container _contents;
 
-    private void Start()
+    private void Awake()
     {
         _contents = new Container(1);
+    }
+
+    private void Start()
+    {
         Invoke(nameof(AddFish), 5f);
         _contents.onUpdate = UpdateCountText;
     }
-    
+
     public bool HasFish()
     {
         return _contents.GetCount() > 0;
@@ -48,12 +55,20 @@ public class Trap : HasContainer
         var p = fish.transform.position;
         EffectManager.Instance.AddEffect(0, p);
         EffectManager.Instance.AddEffect(1, p);
-        _contents.Add(Fisher.GetRandomFish());
+        var f = inventory.fisher.GetRandomFish();
+        _contents.Add(f);
+        fish.color = _contents.GetColor();
+        fish.transform.localScale = _contents.GetSize() * Vector3.one;
         UpdateVisuals();
     }
 
     private void UpdateVisuals()
     {
         fish.gameObject.SetActive(HasFish());
+    }
+
+    public void SetMaxSize(int i)
+    {
+        _contents.SetMaxSize(i);
     }
 }

@@ -161,7 +161,9 @@ public class Dog : HasContainer
                 if (f != null)
                 {
                     fishHolder.SetActive(true);
-                    _bag.Add((Fish)f);   
+                    _bag.Add((Fish)f);
+                    fish.color = _bag.GetColor();
+                    fish.transform.localScale = _bag.GetSize() * Vector3.one;
                 }
             }
             Invoke(nameof(GetTarget), GetDelay());
