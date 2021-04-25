@@ -5,6 +5,7 @@ using AnttiStarterKit.Managers;
 using AnttiStarterKit.Utils;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using AnttiStarterKit.Extensions;
 using Random = UnityEngine.Random;
 
 public class Inventory : MonoBehaviour
@@ -22,17 +23,20 @@ public class Inventory : MonoBehaviour
     private List<Dog> _dogs;
 
     private bool _hasStarted;
+    private bool _canStart;
 
     private void Start()
     {
         traps = new List<Trap>();
         _dogs = new List<Dog>();
         _upgrades = new Dictionary<Upgrade, int>();
+
+        this.StartCoroutine(() => _canStart = true, 2f);
     }
 
     private void Update()
     {
-        if (!_hasStarted && Input.anyKeyDown)
+        if (!_hasStarted && Input.anyKeyDown && _canStart)
         {
             _hasStarted = true;
             fisher.DoStart();
