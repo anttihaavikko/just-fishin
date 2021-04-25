@@ -101,6 +101,66 @@ public class Shop : MonoBehaviour
                 Color = c.color,
                 SpriteIndex = 0
             });
+            
+            _itemPool[ClothesCategory].Add(new EquipItem
+            {
+                Name = c.name + " Beanie",
+                Description = "Warm and fuzzy " + c.name.ToLower() + " beanie",
+                Price = 50,
+                Slot = EquipSlot.Hat,
+                Color = c.color,
+                SpriteIndex = 1
+            });
+            
+            _itemPool[ClothesCategory].Add(new EquipItem
+            {
+                Name = c.name + " Tophat",
+                Description = "Elegant looking " + c.name.ToLower() + " hat",
+                Price = 100,
+                Slot = EquipSlot.Hat,
+                Color = c.color,
+                SpriteIndex = 3
+            });
+            
+            _itemPool[ClothesCategory].Add(new EquipItem
+            {
+                Name = c.name + " Cap",
+                Description = "Casual " + c.name.ToLower() + " cap",
+                Price = 75,
+                Slot = EquipSlot.Hat,
+                Color = c.color,
+                SpriteIndex = 5
+            });
+            
+            _itemPool[ClothesCategory].Add(new EquipItem
+            {
+                Name = c.name + " Snap Cap",
+                Description = "Down to earth " + c.name.ToLower() + " cap",
+                Price = 75,
+                Slot = EquipSlot.Hat,
+                Color = c.color,
+                SpriteIndex = 4
+            });
+            
+            _itemPool[ClothesCategory].Add(new EquipItem
+            {
+                Name = c.name + " Beret",
+                Description = "Artsy and warm " + c.name.ToLower() + " beret",
+                Price = 80,
+                Slot = EquipSlot.Hat,
+                Color = c.color,
+                SpriteIndex = 6
+            });
+        });
+        
+        _itemPool[ClothesCategory].Add(new EquipItem
+        {
+            Name = "Crows",
+            Description = "Wow that's regal!",
+            Price = 10000,
+            Slot = EquipSlot.Hat,
+            Color = Color.white,
+            SpriteIndex = 2
         });
         
         Close();

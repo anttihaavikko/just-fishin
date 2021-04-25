@@ -2489,6 +2489,9 @@ MonoBehaviour:
   rodSprite: {fileID: 80928991}
   hatSprites:
   - {fileID: 21300000, guid: 6078c5b55affc4382b91603952776ea4, type: 3}
+  - {fileID: 21300000, guid: 33efd6bf0ba7c41b8a17dfb3f66e82d2, type: 3}
+  - {fileID: 21300000, guid: d32434cd2dbf24b9893a790f7c093760, type: 3}
+  - {fileID: 21300000, guid: b0708da467b2b41d989481413eaee292, type: 3}
   seeker: {fileID: 406473866}
   faceHolder: {fileID: 522126769}
   marker: {fileID: 1201595986}
@@ -9669,6 +9672,12 @@ MonoBehaviour:
     color: {r: 0.254717, g: 0.1815259, b: 0.07088822, a: 1}
   - name: Pink
     color: {r: 0.8584906, g: 0.5709772, b: 0.6042615, a: 1}
+  - name: Yellow
+    color: {r: 1, g: 0.9880785, b: 0, a: 1}
+  - name: Lime
+    color: {r: 0.5137267, g: 0.8207547, b: 0.4761926, a: 1}
+  - name: Purple
+    color: {r: 0.6792453, g: 0.2787469, b: 0.6425022, a: 1}
 --- !u!1 &1684527582
 GameObject:
   m_ObjectHideFlags: 0
