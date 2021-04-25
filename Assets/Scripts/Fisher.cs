@@ -14,7 +14,7 @@ public class Fisher : HasContainer
 {
     public Camera cam;
     public Animator anim;
-    public LayerMask lakeMask, trapMask;
+    public LayerMask lakeMask, trapMask, blockMask;
     public SpriteRenderer shirtSprite, hatSprite, rodSprite;
     public List<Sprite> hatSprites;
     public Seeker seeker;
@@ -26,11 +26,11 @@ public class Fisher : HasContainer
     public Trap trapPrefab;
     public SpriteRenderer fishSprite;
     public List<Fish> fishList;
-    public MyAppearer speech;
+    public MyAppearer speech, helpMessage;
 
     public Shop shop;
     public Inventory inventory;
-    
+
     public List<EquipItem> Gear { get; private set; }
 
     private Vector3 _movePos;
@@ -46,12 +46,14 @@ public class Fisher : HasContainer
     private bool _holding;
     private bool _biteActive;
     private bool _fishingDone = true;
-    
+
     private Coroutine _fishingCoroutine;
     private Fish _currentFish;
     private EquipItem _heldTrap;
 
     private int _rodLevel, _hookLevel;
+
+    private TutorialMessage _tutorialProgress;
 
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
@@ -67,8 +69,15 @@ public class Fisher : HasContainer
         _markerParent = marker.parent;
 
         _bag.onUpdate = UpdateCountText;
-        
+
         AddStarterGear();
+
+        Invoke(nameof(ShowFishTutorial), 1f);
+    }
+
+    private void ShowFishTutorial()
+    {
+        ShowTutorial(TutorialMessage.Fish);
     }
 
     private void AddStarterGear()
@@ -91,22 +100,67 @@ public class Fisher : HasContainer
         });
     }
 
+    private void ShowTutorial(TutorialMessage num)
+    {
+        Debug.Log("Trying to start tutorial " + num + ", current progress is " + _tutorialProgress);
+        
+        if (num < _tutorialProgress) return;
+
+        _tutorialProgress = num;
+        
+        switch (num)
+        {
+            case TutorialMessage.Fish:
+                helpMessage.ShowWithText("START FISHING BY CLICKING ON THE LAKE", 0.5f);
+                break;
+            case TutorialMessage.Inventory:
+                helpMessage.ShowWithText("PRESS SPACE OR RMB TO OPEN INVENTORY", 0.5f);
+                break;
+            case TutorialMessage.Shop:
+                helpMessage.ShowWithText("PRESS SPACE OR RMB NEAR BOOTH TO SHOP", 0.5f);
+                break;
+        }
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) ||
             Input.GetKeyDown(KeyCode.Escape) ||
-            Input.GetKeyDown(KeyCode.I) || 
+            Input.GetKeyDown(KeyCode.I) ||
             Input.GetKeyDown(KeyCode.E) ||
             Input.GetMouseButtonDown(1))
         {
             var close = (transform.position - inventory.storeSpot.position).magnitude < 1f;
+
+            if (_tutorialProgress == TutorialMessage.Inventory)
+            {
+                _tutorialProgress++;
+                helpMessage.Hide();
+            }
+
+            if (close && _tutorialProgress == TutorialMessage.Shop)
+            {
+                _tutorialProgress++;
+                helpMessage.Hide();
+            }
+            
             shop.Toggle(_bag, close);
         }
-        
+
         Move();
-        
+
         if (shop.IsOpen) return;
         CheckClick();
+    }
+
+    public void OpenInventory()
+    {
+        shop.Toggle(_bag, false);
+    }
+
+    public void OpenShop()
+    {
+        shop.Toggle(_bag, false);
     }
 
     private void Move()
@@ -194,6 +248,8 @@ public class Fisher : HasContainer
                 _bag.Add(_currentFish);
                 speech.ShowWithText(_currentFish.name, 0f);
                 speech.HideWithDelay();
+                
+                ShowTutorial(_bag.IsFull() ? TutorialMessage.Shop : TutorialMessage.Inventory);
             }
 
             _biteActive = false;
@@ -209,7 +265,7 @@ public class Fisher : HasContainer
         {
             var p = transform.position;
             var dir = mouseInWorld - p;
-            _needsPathFinding = Physics2D.Raycast(p, dir, dir.magnitude, lakeMask);
+            _needsPathFinding = Physics2D.Raycast(p, dir, dir.magnitude, blockMask);
             
             if (_needsPathFinding)
             {
@@ -250,6 +306,14 @@ public class Fisher : HasContainer
     // ReSharper disable once FunctionRecursiveOnAllPaths
     private IEnumerator FishingCoroutine()
     {
+        CancelInvoke(nameof(ShowFishTutorial));
+        
+        if (_tutorialProgress == TutorialMessage.None || _tutorialProgress == TutorialMessage.Fish)
+        {
+            _tutorialProgress = TutorialMessage.FishDone;
+            helpMessage.Hide();
+        }
+
         _currentFish = GetRandomFish();
         fishSprite.color = _currentFish.color;
         fishSprite.transform.localScale = _currentFish.size * Vector3.one;
@@ -399,4 +463,15 @@ public class Fisher : HasContainer
         heldTrapSprite.gameObject.SetActive(state);
         anim.SetBool(Holding, state);
     }
+}
+
+public enum TutorialMessage
+{
+    None = 0,
+    Fish = 1,
+    FishDone,
+    Inventory = 3,
+    InventoryDone,
+    Shop = 5,
+    ShopDone
 }
