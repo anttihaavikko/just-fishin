@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Random = UnityEngine.Random;
 
 public class Shop : MonoBehaviour
 {
@@ -132,10 +133,29 @@ public class Shop : MonoBehaviour
             }
         };
 
-        _itemPool[ClothesCategory] = new List<ShopItem>();
-        equipColors.ForEach(c =>
+        RandomizeClothes();
+
+        Close();
+    }
+
+    private void RandomizeClothes()
+    {
+        _itemPool[ClothesCategory] = new List<ShopItem>(GenerateClothes());
+        Invoke(nameof(RandomizeClothes), 60f);
+    }
+
+    private EquipColor GetRandomEquipColor()
+    {
+        return equipColors[Random.Range(0, equipColors.Count)];
+    }
+    
+    private IEnumerable<ShopItem> GenerateClothes()
+    {
+        var list = new List<ShopItem>();
+        for (var i = 0; i < 3; i++)
         {
-            _itemPool[ClothesCategory].Add(new EquipItem
+            var c = GetRandomEquipColor();
+            list.Add(new EquipItem
             {
                 Name = c.name + " Shirt",
                 Description = "Comfortable " + c.name.ToLower() + " t-shirt",
@@ -144,7 +164,38 @@ public class Shop : MonoBehaviour
                 Color = c.color
             });
             
-            _itemPool[ClothesCategory].Add(new EquipItem
+            list.Add(GetRandomHat());
+        }
+
+        list.Add(new EquipItem
+        {
+            Name = "Crown",
+            Description = "Wow that's regal!",
+            Price = 10000,
+            Slot = EquipSlot.Hat,
+            Color = Color.white,
+            SpriteIndex = 2
+        });
+
+        return list.OrderBy(_ => Random.value);
+    }
+
+    private ShopItem GetRandomHat()
+    {
+        var pool = new List<EquipItem>();
+        
+        equipColors.ForEach(c =>
+        {
+            pool.Add(new EquipItem
+            {
+                Name = c.name + " Shirt",
+                Description = "Comfortable " + c.name.ToLower() + " t-shirt",
+                Price = 50,
+                Slot = EquipSlot.Shirt,
+                Color = c.color
+            });
+            
+            pool.Add(new EquipItem
             {
                 Name = c.name + " Bucket Hat",
                 Description = "Practical " + c.name.ToLower() + " hat",
@@ -154,7 +205,7 @@ public class Shop : MonoBehaviour
                 SpriteIndex = 0
             });
             
-            _itemPool[ClothesCategory].Add(new EquipItem
+            pool.Add(new EquipItem
             {
                 Name = c.name + " Beanie",
                 Description = "Warm and fuzzy " + c.name.ToLower() + " beanie",
@@ -164,7 +215,7 @@ public class Shop : MonoBehaviour
                 SpriteIndex = 1
             });
             
-            _itemPool[ClothesCategory].Add(new EquipItem
+            pool.Add(new EquipItem
             {
                 Name = c.name + " Tophat",
                 Description = "Elegant looking " + c.name.ToLower() + " hat",
@@ -174,7 +225,7 @@ public class Shop : MonoBehaviour
                 SpriteIndex = 3
             });
             
-            _itemPool[ClothesCategory].Add(new EquipItem
+            pool.Add(new EquipItem
             {
                 Name = c.name + " Cap",
                 Description = "Casual " + c.name.ToLower() + " cap",
@@ -184,7 +235,7 @@ public class Shop : MonoBehaviour
                 SpriteIndex = 5
             });
             
-            _itemPool[ClothesCategory].Add(new EquipItem
+            pool.Add(new EquipItem
             {
                 Name = c.name + " Snap Cap",
                 Description = "Down to earth " + c.name.ToLower() + " cap",
@@ -194,7 +245,7 @@ public class Shop : MonoBehaviour
                 SpriteIndex = 4
             });
             
-            _itemPool[ClothesCategory].Add(new EquipItem
+            pool.Add(new EquipItem
             {
                 Name = c.name + " Beret",
                 Description = "Artsy and warm " + c.name.ToLower() + " beret",
@@ -204,18 +255,8 @@ public class Shop : MonoBehaviour
                 SpriteIndex = 6
             });
         });
-        
-        _itemPool[ClothesCategory].Add(new EquipItem
-        {
-            Name = "Crows",
-            Description = "Wow that's regal!",
-            Price = 10000,
-            Slot = EquipSlot.Hat,
-            Color = Color.white,
-            SpriteIndex = 2
-        });
-        
-        Close();
+
+        return pool[Random.Range(0, pool.Count)];
     }
 
     private void UpdateSellMenu(Container items, bool canSell = true)

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AnttiStarterKit.Utils;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Random = UnityEngine.Random;
 
 public class Inventory : MonoBehaviour
 {
@@ -28,12 +29,13 @@ public class Inventory : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.D))
         {
-            AddDog(Color.yellow);
+            AddDog();
         }
     }
 
-    private void AddDog(Color color)
+    private void AddDog()
     {
+        var color = Color.HSVToRGB(Random.value, 0.4f, 0.95f);
         var dog = Instantiate(dogPrefab, fisher.transform.position + Dog.GetRandomOffset(), Quaternion.identity);
         dog.inventory = this;
         dog.SetColor(color);
@@ -57,7 +59,7 @@ public class Inventory : MonoBehaviour
         switch (item)
         {
             case Upgrade.Dog:
-                AddDog(Color.white);
+                AddDog();
                 break;
             case Upgrade.BagSpace:
                 fisher.ScaleBag();
