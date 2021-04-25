@@ -48,13 +48,65 @@ public class Shop : MonoBehaviour
                 Description = "A decent rod for beginners",
                 Price = 50,
                 Repeatable = false,
-                Slot = EquipSlot.Rod
+                Slot = EquipSlot.Rod,
+                Color = equipColors[7].color
             },
             new EquipItem
             {
                 Name = "Newbie Hook",
                 Description = "A decent hook for beginners",
                 Price = 50,
+                Repeatable = false,
+                Slot = EquipSlot.Hook
+            },
+            new EquipItem
+            {
+                Name = "Classic Rod",
+                Description = "All around good rod",
+                Price = 200,
+                Repeatable = false,
+                Slot = EquipSlot.Rod,
+                Color = equipColors[6].color
+            },
+            new EquipItem
+            {
+                Name = "Classic Hook",
+                Description = "All around good hook",
+                Price = 200,
+                Repeatable = false,
+                Slot = EquipSlot.Hook
+            },
+            new EquipItem
+            {
+                Name = "Pro Rod",
+                Description = "Very advanced rod made from glass fiber",
+                Price = 600,
+                Repeatable = false,
+                Slot = EquipSlot.Rod,
+                Color = equipColors[5].color
+            },
+            new EquipItem
+            {
+                Name = "Pro Hook",
+                Description = "Very advanced hook made from titanium",
+                Price = 600,
+                Repeatable = false,
+                Slot = EquipSlot.Hook
+            },
+            new EquipItem
+            {
+                Name = "Regal Rod",
+                Description = "This superb rod is made from gold!",
+                Price = 2000,
+                Repeatable = false,
+                Slot = EquipSlot.Rod,
+                Color = Color.yellow
+            },
+            new EquipItem
+            {
+                Name = "Golden Hook",
+                Description = "Fish go crazy for this!",
+                Price = 2000,
                 Repeatable = false,
                 Slot = EquipSlot.Hook
             }

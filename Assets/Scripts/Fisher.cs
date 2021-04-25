@@ -26,7 +26,7 @@ public class Fisher : HasContainer
     public Trap trapPrefab;
     public SpriteRenderer fishSprite;
     public List<Fish> fishList;
-    
+
     public Shop shop;
     public Inventory inventory;
     
@@ -74,7 +74,8 @@ public class Fisher : HasContainer
             Name = "Twig",
             Description = "Barely functions as a fishing rod",
             Slot = EquipSlot.Rod,
-            Equipped = true
+            Equipped = true,
+            Color = shop.equipColors[6].color
         });
 
         Gear.Add(new EquipItem
@@ -339,6 +340,7 @@ public class Fisher : HasContainer
             case EquipSlot.Hook:
                 break;
             case EquipSlot.Rod:
+                rodSprite.color = item.Color;
                 break;
         }
     }

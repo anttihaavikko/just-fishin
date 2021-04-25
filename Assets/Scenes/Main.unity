@@ -2486,12 +2486,15 @@ MonoBehaviour:
     m_Bits: 128
   shirtSprite: {fileID: 921358400}
   hatSprite: {fileID: 884187791}
-  rodSprite: {fileID: 80928991}
+  rodSprite: {fileID: 1064999316}
   hatSprites:
   - {fileID: 21300000, guid: 6078c5b55affc4382b91603952776ea4, type: 3}
   - {fileID: 21300000, guid: 33efd6bf0ba7c41b8a17dfb3f66e82d2, type: 3}
   - {fileID: 21300000, guid: d32434cd2dbf24b9893a790f7c093760, type: 3}
   - {fileID: 21300000, guid: b0708da467b2b41d989481413eaee292, type: 3}
+  - {fileID: 21300000, guid: 8ef450228d34c42f0b2b6d5ed1720014, type: 3}
+  - {fileID: 21300000, guid: 8dc2f913ef1934dc4b1b31db14bab2b6, type: 3}
+  - {fileID: 21300000, guid: 37699eb32d29b416e8a3e5fc06bf433a, type: 3}
   seeker: {fileID: 406473866}
   faceHolder: {fileID: 522126769}
   marker: {fileID: 1201595986}
@@ -6671,9 +6674,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 95d3625293ffa48b0b49242f526d9fb8, type: 3}
-  m_Color: {r: 0.4245283, g: 0.3092272, b: 0.17822178, a: 1}
+  m_Color: {r: 0.65882355, g: 0.49019608, b: 0.23529412, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
