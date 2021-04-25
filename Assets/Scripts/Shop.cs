@@ -20,23 +20,69 @@ public class Shop : MonoBehaviour
     
     public bool IsOpen { get; private set; }
 
-    private List<ShopItem> _itemPool;
+    private Dictionary<string, List<ShopItem>> _itemPool;
+
+    private const string UpgradeCategory = "UpgradeCategory";
+    private const string EquipCategory = "EquipCategory";
+    private const string PetCategory = "PetCategory";
+    private const string ClothesCategory = "ClothesCategory";
 
     private void Start()
     {
-        _itemPool = new List<ShopItem>
+        _itemPool = new Dictionary<string, List<ShopItem>>();
+        
+        _itemPool[UpgradeCategory] = new List<ShopItem>
         {
             new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
             new UpgradeItem {Name = "Patron", Description = "Decreases buy prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Patron},
             new UpgradeItem {Name = "Bigger Bag", Description = "+5 bag space", Price = 100, Repeatable = true, Type = Upgrade.BagSpace},
-            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader},
-            new UpgradeItem {Name = "Dog", Description = "Lovely helper pet", Price = 300, Repeatable = true, Type = Upgrade.Dog},
-            new UpgradeItem {Name = "Doggy Bag", Description = "A bag for your dog", Price = 300, Repeatable = false, Type = Upgrade.DogBag}
+            new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader}
+        };
+        
+        _itemPool[EquipCategory] = new List<ShopItem>
+        {
+            new EquipItem
+            {
+                Name = "Newbie Rod",
+                Description = "A decent rod for beginners",
+                Price = 50,
+                Repeatable = false,
+                Slot = EquipSlot.Rod
+            },
+            new EquipItem
+            {
+                Name = "Newbie Hook",
+                Description = "A decent hook for beginners",
+                Price = 50,
+                Repeatable = false,
+                Slot = EquipSlot.Hook
+            }
         };
 
+        _itemPool[PetCategory] = new List<ShopItem>
+        {
+            new UpgradeItem
+            {
+                Name = "Dog",
+                Description = "Lovely helper pet",
+                Price = 300,
+                Repeatable = true,
+                Type = Upgrade.Dog
+            },
+            new UpgradeItem
+            {
+                Name = "Doggy Bag",
+                Description = "A bag for your dog",
+                Price = 300,
+                Repeatable = false,
+                Type = Upgrade.DogBag
+            }
+        };
+
+        _itemPool[ClothesCategory] = new List<ShopItem>();
         equipColors.ForEach(c =>
         {
-            _itemPool.Add(new EquipItem
+            _itemPool[ClothesCategory].Add(new EquipItem
             {
                 Name = c.name + " Shirt",
                 Description = "Comfortable " + c.name.ToLower() + " t-shirt",
@@ -45,7 +91,7 @@ public class Shop : MonoBehaviour
                 Color = c.color
             });
             
-            _itemPool.Add(new EquipItem
+            _itemPool[ClothesCategory].Add(new EquipItem
             {
                 Name = c.name + " Bucket Hat",
                 Description = "Practical " + c.name.ToLower() + " hat",
@@ -147,7 +193,10 @@ public class Shop : MonoBehaviour
             CreateCategory("Sell all", "Sell all fish", () => SellAll(bag));   
         }
         CreateCategory("Sell", "Sell to D. Behr", () => UpdateSellMenu(bag));
-        CreateCategory("Buy", "Buy from D. Behr", UpdateBuyMenu);
+        CreateCategory("Browse Upgrades", "Buy from D. Behr", () => UpdateBuyMenu(UpgradeCategory));
+        CreateCategory("Browse Equipment", "Buy from D. Behr", () => UpdateBuyMenu(EquipCategory));
+        CreateCategory("Browse Pet Stuff", "Buy from D. Behr", () => UpdateBuyMenu(PetCategory));
+        CreateCategory("Browse Clothes", "Buy from D. Behr", () => UpdateBuyMenu(ClothesCategory));
         CreateCategory("Close", "Leave shop", Close);
         
         CreateSpacer(categoryPanel.container);
@@ -160,13 +209,13 @@ public class Shop : MonoBehaviour
         categoryPanel.Add(spacer);
     }
 
-    private void UpdateBuyMenu()
+    private void UpdateBuyMenu(string category)
     {
         sellPanel.Clear();
         
         sellPanel.title.text = "In stock";
         
-        _itemPool.ForEach(item =>
+        _itemPool[category].ForEach(item =>
         {
             var btn = Instantiate(buttonPrefab, sellPanel.container);
             sellPanel.Add(btn.gameObject);
@@ -177,14 +226,14 @@ public class Shop : MonoBehaviour
             {
                 if (!item.Repeatable)
                 {
-                    _itemPool.Remove(item);
+                    _itemPool[category].Remove(item);
                     Destroy(btn.gameObject);                    
                 }
                 
                 inventory.AddMoney(-item.GetRealPrice(fisher));
                 item.Buy(fisher);
                 
-                UpdateBuyMenu();
+                UpdateBuyMenu(category);
             });
         });
     }
