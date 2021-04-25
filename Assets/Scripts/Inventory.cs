@@ -32,6 +32,16 @@ public class Inventory : MonoBehaviour
         {
             AddDog();
         }
+        
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Time.timeScale = 1f;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Time.timeScale = 5f;
+        }
     }
 
     private void AddDog()

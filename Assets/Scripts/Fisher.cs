@@ -50,6 +50,8 @@ public class Fisher : HasContainer
     private Fish _currentFish;
     private EquipItem _heldTrap;
 
+    private int _rodLevel, _hookLevel;
+
     private static readonly int Moving = Animator.StringToHash("moving");
     private static readonly int Fishing = Animator.StringToHash("fishing");
     private static readonly int Holding = Animator.StringToHash("holding");
@@ -157,9 +159,11 @@ public class Fisher : HasContainer
         countText.alignment = mirrored ? TextAlignmentOptions.Right : TextAlignmentOptions.Left;
     }
 
-    public Fish GetRandomFish()
+    public Fish GetRandomFish(bool trap = false)
     {
-        return fishList[Random.Range(0, fishList.Count)];
+        var lvl = !trap || inventory.HasUpgrade(Upgrade.BetterTraps) ? _rodLevel + _hookLevel : 0;
+        var possible = fishList.Where(f => f.difficulty <= lvl).ToList();
+        return possible[Random.Range(0, possible.Count)];
     }
 
     private void CheckClick()
@@ -245,12 +249,12 @@ public class Fisher : HasContainer
         _currentFish = GetRandomFish();
         fishSprite.color = _currentFish.color;
         fishSprite.transform.localScale = _currentFish.size * Vector3.one;
-        var waitTime = Random.Range(1f, 10f);
+        var waitTime = Random.Range(1f, 10f) * Mathf.Pow(0.9f, _rodLevel);
         yield return new WaitForSeconds(waitTime);
         _biteActive = true;
         var pos = marker.position;
         Bite();
-        var delay = Random.Range(0.5f, 1f);
+        var delay = Random.Range(0.5f, 1f) * Mathf.Pow(1.1f, _hookLevel);
         yield return new WaitForSeconds(delay / _currentFish.speed);
         ResetBite(pos);
         _biteActive = false;
@@ -354,8 +358,10 @@ public class Fisher : HasContainer
                 hatSprite.sprite = hatSprites[item.SpriteIndex];
                 break;
             case EquipSlot.Hook:
+                _hookLevel = item.Level;
                 break;
             case EquipSlot.Rod:
+                _rodLevel = item.Level;
                 rodSprite.color = item.Color;
                 break;
             case EquipSlot.Trap:

@@ -39,6 +39,7 @@ public class Shop : MonoBehaviour
             new UpgradeItem {Name = "Bigger Bag", Description = "+5 bag space", Price = 100, Repeatable = true, Type = Upgrade.BagSpace},
             new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 500, Repeatable = false, Type = Upgrade.BulkTrader},
             new UpgradeItem {Name = "Bigger Traps", Description = "Traps can hold up to 3 fish", Price = 100, Repeatable = false, Type = Upgrade.BigTraps},
+            new UpgradeItem {Name = "Advanced Traps", Description = "Traps get more fishing power", Price = 100, Repeatable = false, Type = Upgrade.BetterTraps},
         };
         
         _itemPool[EquipCategory] = new List<ShopItem>
@@ -58,7 +59,8 @@ public class Shop : MonoBehaviour
                 Price = 50,
                 Repeatable = false,
                 Slot = EquipSlot.Rod,
-                Color = equipColors[7].color
+                Color = equipColors[7].color,
+                Level = 1
             },
             new EquipItem
             {
@@ -66,7 +68,8 @@ public class Shop : MonoBehaviour
                 Description = "A decent hook for beginners",
                 Price = 50,
                 Repeatable = false,
-                Slot = EquipSlot.Hook
+                Slot = EquipSlot.Hook,
+                Level = 1
             },
             new EquipItem
             {
@@ -75,7 +78,8 @@ public class Shop : MonoBehaviour
                 Price = 200,
                 Repeatable = false,
                 Slot = EquipSlot.Rod,
-                Color = equipColors[6].color
+                Color = equipColors[6].color,
+                Level = 2
             },
             new EquipItem
             {
@@ -83,7 +87,8 @@ public class Shop : MonoBehaviour
                 Description = "All around good hook",
                 Price = 200,
                 Repeatable = false,
-                Slot = EquipSlot.Hook
+                Slot = EquipSlot.Hook,
+                Level = 2
             },
             new EquipItem
             {
@@ -92,7 +97,8 @@ public class Shop : MonoBehaviour
                 Price = 600,
                 Repeatable = false,
                 Slot = EquipSlot.Rod,
-                Color = equipColors[5].color
+                Color = equipColors[5].color,
+                Level = 3
             },
             new EquipItem
             {
@@ -100,7 +106,8 @@ public class Shop : MonoBehaviour
                 Description = "Very advanced hook made from titanium",
                 Price = 600,
                 Repeatable = false,
-                Slot = EquipSlot.Hook
+                Slot = EquipSlot.Hook,
+                Level = 3
             },
             new EquipItem
             {
@@ -109,7 +116,8 @@ public class Shop : MonoBehaviour
                 Price = 2000,
                 Repeatable = false,
                 Slot = EquipSlot.Rod,
-                Color = Color.yellow
+                Color = Color.yellow,
+                Level = 4
             },
             new EquipItem
             {
@@ -117,7 +125,8 @@ public class Shop : MonoBehaviour
                 Description = "Fish go crazy for this!",
                 Price = 2000,
                 Repeatable = false,
-                Slot = EquipSlot.Hook
+                Slot = EquipSlot.Hook,
+                Level = 4
             }
         };
 
@@ -492,6 +501,7 @@ public class EquipItem : ShopItem
     public Color Color { get; set; } = Color.white;
     public EquipSlot Slot;
     public int SpriteIndex { get; set; } = -1;
+    public int Level { get; set; } = 0;
 
     public override void Buy(Fisher fisher)
     {
@@ -525,5 +535,6 @@ public enum Upgrade
     BulkTrader,
     Dog,
     DogBag,
-    BigTraps
+    BigTraps,
+    BetterTraps
 }
