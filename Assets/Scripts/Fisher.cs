@@ -497,7 +497,7 @@ public class Fisher : HasContainer
     public void ScaleBag()
     {
         var level = inventory.GetLevel(Upgrade.BagSpace);
-        var size = Mathf.Pow(1.2f, level);
+        var size = 3f - Mathf.Pow(0.85f, level) * 2f;
         Tweener.Instance.ScaleTo(bagSprite, Vector3.one * size, 0.2f, 0f, TweenEasings.BounceEaseOut);
         _bag.SetMaxSize(5 + 5 * level);
     }
