@@ -500,9 +500,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   button: {fileID: 8350722279565404685}
   doScale: 1
-  scaleAmount: 0.1
+  scaleAmount: 0.05
   doRotation: 1
-  rotationAmount: 2
+  rotationAmount: 1
   frontImages:
   - {fileID: 8350722279565404686}
   bgImages:
