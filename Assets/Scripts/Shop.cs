@@ -85,7 +85,7 @@ public class Shop : MonoBehaviour
             {
                 Name = "Classic Hook",
                 Description = "All around good hook",
-                Price = 280,
+                Price = 180,
                 Repeatable = false,
                 Slot = EquipSlot.Hook,
                 Level = 2
