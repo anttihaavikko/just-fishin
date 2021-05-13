@@ -34,8 +34,8 @@ public class Shop : MonoBehaviour
         
         _itemPool[UpgradeCategory] = new List<ShopItem>
         {
-            new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
             new UpgradeItem {Name = "Patron", Description = "Decreases buy prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Patron},
+            new UpgradeItem {Name = "Haggler", Description = "Increases sell prices by 10%", Price = 50, Repeatable = true, Type = Upgrade.Haggle},
             new UpgradeItem {Name = "Bigger Bag", Description = "+5 bag space", Price = 100, Repeatable = true, Type = Upgrade.BagSpace},
             new UpgradeItem {Name = "Bulk Trader", Description = "Ability to sell all fish", Price = 250, Repeatable = false, Type = Upgrade.BulkTrader},
             new UpgradeItem {Name = "Bigger Traps", Description = "Traps can hold up to 3 fish", Price = 300, Repeatable = false, Type = Upgrade.BigTraps},
