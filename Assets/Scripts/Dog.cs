@@ -111,7 +111,7 @@ public class Dog : HasContainer
     private void GoSell()
     {
         _waiting = false;
-        FindPath(inventory.storeSpot.position + GetRandomOffset(0.2f));
+        FindPath(inventory.storeSpot.position + Vector3.down * 0.5f + GetRandomOffset(0.2f));
         _selling = true;
     }
 

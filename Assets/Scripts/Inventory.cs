@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour
     public Transform storeSpot;
     public Dog dogPrefab;
     public Score scoreDisplay;
+    public Animator booth;
 
     public List<MyAppearer> logoStuffs;
     
@@ -24,6 +25,10 @@ public class Inventory : MonoBehaviour
 
     private bool _hasStarted;
     private bool _canStart;
+    
+    private static readonly int Activate = Animator.StringToHash("activate");
+    
+    public const double ShopRange = 1.5f;
 
     private void Start()
     {
@@ -64,6 +69,11 @@ public class Inventory : MonoBehaviour
         {
             Time.timeScale = 5f;
         }
+        
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            ApplyUpgrade(Upgrade.BagSpace);
+        }
     }
 
     private void AddDog()
@@ -84,8 +94,14 @@ public class Inventory : MonoBehaviour
         AudioManager.Instance.PlayEffectAt(Random.Range(24, 26), storeSpot.position, 2f);
         _money += amount;
         scoreDisplay.Add(amount);
+        AnimateBooth();
     }
-    
+
+    public void AnimateBooth()
+    {
+        booth.SetTrigger(Activate);
+    }
+
     public void ApplyUpgrade(Upgrade item)
     {
         InitOrIncrement(item);

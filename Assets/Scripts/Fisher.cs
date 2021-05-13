@@ -154,7 +154,7 @@ public class Fisher : HasContainer
             Input.GetKeyDown(KeyCode.E) ||
             Input.GetMouseButtonDown(1))
         {
-            var close = (transform.position - inventory.storeSpot.position).magnitude < 1f;
+            var close = (transform.position - inventory.storeSpot.position).magnitude < Inventory.ShopRange;
 
             if (_tutorialProgress == TutorialMessage.Inventory)
             {
@@ -261,6 +261,14 @@ public class Fisher : HasContainer
         var lvl = !trap || inventory.HasUpgrade(Upgrade.BetterTraps) ? _rodLevel + _hookLevel : 0;
         var possible = fishList.Where(f => f.difficulty <= lvl).ToList();
         return possible[Random.Range(0, possible.Count)];
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Booth"))
+        {
+            inventory.AnimateBooth();
+        }
     }
 
     private void CheckClick()
