@@ -64,7 +64,7 @@ public class Fisher : HasContainer
     private static readonly int Holding = Animator.StringToHash("holding");
     private static readonly int Pull = Animator.StringToHash("pull");
     
-    private const float FishingRange = 8f;
+    private const float FishingRange = 5f;
 
     private void Start()
     {
