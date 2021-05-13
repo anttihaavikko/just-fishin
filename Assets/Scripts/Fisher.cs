@@ -63,6 +63,8 @@ public class Fisher : HasContainer
     private static readonly int Fishing = Animator.StringToHash("fishing");
     private static readonly int Holding = Animator.StringToHash("holding");
     private static readonly int Pull = Animator.StringToHash("pull");
+    
+    private const float FishingRange = 8f;
 
     private void Start()
     {
@@ -406,7 +408,7 @@ public class Fisher : HasContainer
         }
         var hit = Physics2D.OverlapCircle(pos, 0.1f, lakeMask);
         var hitTrap = Physics2D.OverlapCircle(pos, 0.1f, trapMask);
-        if (!hit || (transform.position - pos).magnitude > 5f || hitTrap) return false;
+        if (!hit || (transform.position - pos).magnitude > FishingRange || hitTrap) return false;
 
         if (_holding)
         {
