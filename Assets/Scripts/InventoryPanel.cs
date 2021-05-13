@@ -7,6 +7,7 @@ public class InventoryPanel : MonoBehaviour
 {
     public Transform container;
     public TMP_Text title;
+    public MyAppearer appearer;
 
     private List<GameObject> _items;
     

@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
+using AnttiStarterKit.Extensions;
 
 public class Shop : MonoBehaviour
 {
@@ -269,6 +270,7 @@ public class Shop : MonoBehaviour
 
     private void UpdateSellMenu(Container items, bool canSell = true)
     {
+        sellPanel.appearer.Show();
         sellPanel.Clear();
         
         if (items.GetCount() == 0) return;
@@ -298,6 +300,13 @@ public class Shop : MonoBehaviour
 
     private void Open(Container bag, bool shopping)
     {
+        categoryPanel.appearer.Show();
+
+        if (!shopping)
+        {
+            sellPanel.appearer.Show();   
+        }
+
         IsOpen = true;
         wrapper.SetActive(true);
 
@@ -343,6 +352,7 @@ public class Shop : MonoBehaviour
 
     private void PopulateConfirmation()
     {
+        sellPanel.appearer.Show();
         sellPanel.Clear();
         sellPanel.title.text = "Are you sure?";
         CreateInventoryItem("Yes", "So sad...", Application.Quit, sellPanel);
@@ -375,6 +385,7 @@ public class Shop : MonoBehaviour
 
     private void UpdateBuyMenu(string category)
     {
+        sellPanel.appearer.Show();
         sellPanel.Clear();
         
         sellPanel.title.text = "In stock";
@@ -439,9 +450,16 @@ public class Shop : MonoBehaviour
 
     private void Close()
     {
+        categoryPanel.appearer.Hide();
+        sellPanel.appearer.Hide();
+        
         IsOpen = false;
-        wrapper.SetActive(false);
-        sellPanel.Clear();
+
+        this.StartCoroutine(() =>
+        {
+            wrapper.SetActive(false);
+            sellPanel.Clear();
+        }, 0.3f);
     }
 
     public void Toggle(Container bag, bool shopping)

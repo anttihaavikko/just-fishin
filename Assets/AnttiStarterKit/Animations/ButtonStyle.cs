@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using AnttiStarterKit.Extensions;
 
 namespace AnttiStarterKit.Animations
 {
@@ -34,6 +35,16 @@ namespace AnttiStarterKit.Animations
         {
             originalScale = transform.localScale;
             cam = Camera.main;
+
+            if (bgImages.Any())
+            {
+                originalBackColor = bgImages.First().color;
+            }
+            
+            if (texts.Any())
+            {
+                originalFrontColor = texts.First().color;
+            }
         }
 
         private Vector3 GetSoundPos()
@@ -76,18 +87,15 @@ namespace AnttiStarterKit.Animations
             
             bgImages.ForEach(i =>
             {
-                originalBackColor = i.color;
                 i.color = back;
             });
 
             frontImages.ForEach(i =>
             {
-                originalFrontColor = i.color;
                 i.color = front;
             });
 
             if (!texts.Any()) return;
-            originalFrontColor = texts.First().color;
             texts.ForEach(t => t.color = front);
         }
 
