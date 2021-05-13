@@ -13,7 +13,7 @@ public class Score : MonoBehaviour
     public TMP_Text display, addition;
     public MyAppearer additionMyAppearer;
 
-    private int score;
+    private ulong score;
     private float shownScore;
     private int shownAddition;
 
@@ -38,7 +38,7 @@ public class Score : MonoBehaviour
 
     private void HideAddition()
     {
-        score += shownAddition;
+        score += (ulong)shownAddition;
         additionMyAppearer.Hide();
         shownAddition = 0;
     }
