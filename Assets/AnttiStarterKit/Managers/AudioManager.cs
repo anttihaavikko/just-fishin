@@ -8,7 +8,7 @@ namespace AnttiStarterKit.Managers
 		public AudioSource[] musics;
 
 		public float volume = 0.5f;
-		private float musVolume = 0.5f;
+		private float musVolume = 0.25f;
 		public AudioClip[] effects;
 
 		private AudioLowPassFilter lowpass;
